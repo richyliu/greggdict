@@ -1,4 +1,5 @@
-const num = 160;
+// put the page num in search like so: ?n=23
+const num = Number(window.location.search.slice(3));
 // good tests: 120 (missing "grounded"), 180, 270, 289
 // letter pages should have 81, the rest have 93
 
@@ -27,7 +28,7 @@ function loadOverlay() {
           .slice(1)
           .filter(a => !/^\d{2,3}$/.test(a.description))
       );
-      console.log('total', filtered.length);
+      // console.log('total', filtered.length);
       drawTextAnnotations(filtered);
       // drawTextAnnotations(res.textAnnotations.slice(1));
     });
