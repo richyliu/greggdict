@@ -53,10 +53,17 @@ Some words may be missing, in which case manually add them to the output JSON.
 
 ### Step 5: Word spelling error detection
 
-First the words are extracted into `format3/wordlist`. Then they are checked
-against a local dictionary (which may not be complete). Only lowercase alpha
-words are checked, and the ones that do *not* pass are put into
-`format3/notindict`. The words that are not checked are put into
-`format3/nonloweralpha`.
+All the files are in `format3/`. First the words are extracted into `wordlist`.
+Then they are checked against a local dictionary (which may not be complete).
+Only lowercase alpha words are checked, and the ones that do not pass are put
+into `notindict`. The words that are not checked are put into `nonloweralpha`.
+Those unchecked words are checked against the dictionary if they contain only
+alpha characters (lower and uppercase). The ones that do not pass are put into
+`notindict_upperalpha` and the ones that are contain non alpha characters are
+put into `nonalpha`. At this stage there are three files that contain words that
+are not spelled correctly: `nonalpha`, `notindict_upperalpha`, and `notindict`
+(for lower alpha).
+
+
 
 The spelling of words is checked using an online lookup tool.

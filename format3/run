@@ -1,11 +1,11 @@
 #!/bin/zsh
 
 while read line; do
-  if echo "$line" | grep -q "^[a-z]\+$"; then
-    if grep -q "$line" words_alpha.txt; then
+  if echo "$line" | grep -q "^[A-Z][a-z]\+$"; then
+    if grep -iq "$line" words_alpha.txt; then
       #
     else
       echo "$line"
     fi
   fi
-done < wordlist
+done < nonloweralpha

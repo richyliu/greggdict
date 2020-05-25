@@ -98,10 +98,10 @@ function showPage(thePage, pageChanger) {
   ];
 
   const errs = page.errs;
-  const imgFile = `./pages_bkup/${(Number(page.file) - 1 + '').padStart(
+  const imgFile = `./pages/${(Number(page.file) - 1 + '').padStart(
     3,
     '0'
-  )}.jpg`;
+  )}.png`;
   document.getElementById('img').src = imgFile;
 
   document.getElementById('file').innerHTML = `File: ${page.file}`;
