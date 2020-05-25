@@ -1,16 +1,17 @@
 const fs = require('fs');
 const { histFilter } = require('./main');
-const confusables = require('./confusables.json')
+const confusables = require('./confusables.json');
 
 const FROM = 13;
 // const FROM = 74;
 // const TOTAL = 292;
-const TOTAL = 321;
+const TOTAL = 323;
 // const TOTAL = 3;
 
 const rawFiles = Array(TOTAL)
   .fill(0)
   .map((_, i) => i + FROM)
+  .filter(i => i !== 305 && i !== 306)
   .map(a => (a + '').padStart(3, '0'))
   .map(n => `./simplified_final/${n}.json`);
 
@@ -25,7 +26,11 @@ function parseFiles(files) {
     fs.readFile(file, 'utf-8', (err, raw) => {
       data = JSON.parse(raw);
       res = data.responses[0];
-      const { filtered, errors } = histFilter(res.textAnnotations, undefined, confusables);
+      const { filtered, errors } = histFilter(
+        res.textAnnotations,
+        undefined,
+        confusables
+      );
       all.push({
         file,
         total: filtered.length,
@@ -37,7 +42,7 @@ function parseFiles(files) {
         errors,
         words: filtered.map(a => a.description),
       });
-      if (all.length == TOTAL) logAll();
+      if (all.length == files.length) logAll();
     })
   );
 
@@ -148,14 +153,20 @@ function moveToFormat2(files) {
     fs.readFile(file, 'utf-8', (err, raw) => {
       data = JSON.parse(raw);
       res = data.responses[0];
-      const { filtered, errors, columns } = histFilter(res.textAnnotations, undefined, confusables);
+      const { filtered, errors, columns } = histFilter(
+        res.textAnnotations,
+        undefined,
+        confusables
+      );
       all.push({
-        file,
-        columns,
-        errors,
-        words: filtered.map(f => f.processed),
+        file: file.slice(-8, -5),
+        cols: columns,
+        errs: errors,
+        words: filtered
+          .map(f => f.processed)
+          .map(a => ({ t: a.text, x: a.x, y: a.y })),
       });
-      if (all.length == TOTAL) writeAll();
+      if (all.length == files.length) writeAll();
     })
   );
 
@@ -167,6 +178,6 @@ function moveToFormat2(files) {
       val.toFixed ? Number(val.toFixed(1)) : val
     );
 
-    fs.writeFileSync(`format2/${new Date().toISOString()}.json`, data);
+    fs.writeFileSync(`./format2_${new Date().toISOString()}.json`, data);
   }
 }

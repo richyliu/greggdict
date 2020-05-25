@@ -5,6 +5,11 @@
 The process for getting the words and their positions from the raw photos is
 quite complicated. Here is an outline of that process in brief
 
+### Step 0: Clean the images
+
+I didn't do this initially, but this would greatly improve OCR results. Whiten
+the images and increase the contrast and sharpness using a tool like imagemagick
+
 ### Step 1: Scan with Google Cloud Vision
 
 Use Google Cloud Vision's asynchronous batch image processing to get the text of
@@ -38,13 +43,20 @@ a word. This is dealt with in step 5
 Error correction is done by removing letters from the start of the word until it
 fits in alphabetically with the surrounding words.
 
-# YET TO BE IMPLEMENTED
-
 ### Step 4: Manual error correction
 
 The format 2 JSON files are loaded and errors are manually corrected using
-`corrector.html` (and the corresponding `corrector.js`).
+`corrector.html` (and the corresponding `corrector.js`). Periodically save and
+back up the `format.json` file while going through the corrections.
+
+Some words may be missing, in which case manually add them to the output JSON.
 
 ### Step 5: Word spelling error detection
+
+First the words are extracted into `format3/wordlist`. Then they are checked
+against a local dictionary (which may not be complete). Only lowercase alpha
+words are checked, and the ones that do *not* pass are put into
+`format3/notindict`. The words that are not checked are put into
+`format3/nonloweralpha`.
 
 The spelling of words is checked using an online lookup tool.

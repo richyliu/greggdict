@@ -26,7 +26,7 @@ function loadOverlay() {
     .then(data => {
       res = data.responses[0];
 
-      const { filtered, errors, columns } = histFilter(res.textAnnotations)//, context);
+      const { filtered, errors, columns } = histFilter(res.textAnnotations); //, context);
       const processed = filtered.map(f => f.processed);
       drawDone(processed, columns, errors);
       // drawTextAnnotations(filtered);
@@ -119,9 +119,14 @@ function drawDone(processed, columns, errors) {
     context.fillText('Perfect', 30, 50);
   }
 
-  processed.forEach(p => {
+  processed.forEach((p, i) => {
     context.beginPath();
-    if (p.error) {
+    // make it yellow if text is overlapping (very close)
+    if (i > 0 && Math.abs(p.y - processed[i - 1].y) < 10) {
+      context.fillStyle = 'yellow';
+      context.arc(p.x, p.y, 8, 0, 2 * Math.PI);
+    } else if (p.error) {
+      // show fixed errors as green, unfixed as red
       context.fillStyle = p.error.fixed ? 'green' : 'red';
       context.arc(p.x, p.y, 8, 0, 2 * Math.PI);
     } else {
