@@ -40,12 +40,13 @@ function showPage(page, search) {
     dot.style.top = word.y;
     dot.style.left = word.x;
     overlay.appendChild(dot);
+    if (search === word.t) dot.scrollIntoView();
 
     const text = document.createElement('div');
     text.classList.add('text');
     text.style.top = word.y + 10;
     text.style.left = word.x;
-    if (search === word.t) text.style.background = 'red';
+    if (search === word.t) text.style.background = 'rgba(255, 0, 0, 0.4)';
     text.innerHTML = word.t;
     overlay.appendChild(text);
   });

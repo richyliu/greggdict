@@ -64,6 +64,24 @@ put into `nonalpha`. At this stage there are three files that contain words that
 are not spelled correctly: `nonalpha`, `notindict_upperalpha`, and `notindict`
 (for lower alpha).
 
+There are a lot of words which end in "junk" punctuation. Those have been split
+into `nonalpha_endsinpunc` while the rest are in `nonalpha_endsnotpunc`. (This
+is from `nonalpha`)
 
+The spelling of words is checked using an online lookup tool (PhraseFinder.com).
+The file for doing this is `phrasechecker.js`. It is run for each of the 4
+files: `nonalpha_endsinpunc`, `nonalpha_endsnotpunc`, `nonalpha`,
+`notindict_upperalpha`, `notindict` and the result goes into another file with
+`pf_` as the prefix. Non ASCII words are automatically assumed to be non English
+phrases.
 
-The spelling of words is checked using an online lookup tool.
+The words in `nonalpha_endsinpunc` are fixed by removing the ending
+"punctuation" (really anything besides `a-z` that the word ends in). There are
+still a few words after which still are not valid. There are a few words with
+end in `-` that need to be fixed manually.
+
+### Step 6: Manual fixing
+
+There are about 250 words that need to be fixed manually. This is done using
+`fixer.html` and `fixer.js`. It is structured similarly to corrector. The
+relevant files are in `format4/`
