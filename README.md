@@ -85,3 +85,8 @@ end in `-` that need to be fixed manually.
 There are about 250 words that need to be fixed manually. This is done using
 `fixer.html` and `fixer.js`. It is structured similarly to corrector. The
 relevant files are in `format4/`
+
+### Step 7: Final clean up
+
+The file numbers are corrected (to match the actual page number). The output is
+in `format5/`, which includes the images renamed as well.
