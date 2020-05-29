@@ -1,0 +1,100 @@
+<html>
+  <head>
+    <title>Fixer</title>
+    <style>
+      * { margin: 0; padding: 0; }
+
+      #overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      .dot {
+        position: absolute;
+        width: 5px;
+        height: 5px;
+        background: blue;
+      }
+      .dot.red {
+        background: red;
+        width: 10px;
+        height: 10px;
+      }
+      .dot.green {
+        background: yellow;
+        width: 10px;
+        height: 10px;
+      }
+      .text {
+        position: absolute;
+        font-family: Arial, sans-serif;
+        letter-spacing: 3px;
+        font-size: 28px;
+        color: white;
+        line-height: 80%;
+        background: red;
+        cursor: pointer;
+        padding: 6px;
+        border: none;
+      }
+      .text:hover {
+        background: rgba(255, 0, 0, 0.1);
+      }
+      #img-wrapper {
+        display: inline-block;
+      }
+
+      #controls {
+        position: fixed;
+        display: inline-block;
+        vertical-align: top;
+        font-family: Arial, sans-serif;
+        font-size: 24px;
+        margin: 10px 3px;
+      }
+
+      #file {
+        margin-top: 5px;
+        font-size: 20px;
+      }
+      #errors { color: red; }
+
+      button {
+        padding: 5px;
+        font-size: 14px;
+        margin-top: 10px;
+        cursor: pointer;
+        z-index: 10;
+        white-space: nowrap;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="img-wrapper">
+      <div id="overlay"></div>
+      <img id="img" src=""/>
+    </div>
+    <div id="controls">
+      <div id="file">013</div>
+      <div>
+        <span id="errors"></span>
+      </div>
+      <div>
+        <button id="save-and-next">save and next</button>
+      </div>
+      <div>
+        <button id="prev">prev</button>
+        <button id="next">next</button>
+      </div>
+      <div>
+        <button id="download">download</button>
+      </div>
+      <div>
+        <button onclick="overwriteLocalStorage()">load</button>
+      </div>
+    </div>
+    <script src="lz-string.min.js"></script>
+    <script src="fixer.js"></script>
+  </body>
+</html>

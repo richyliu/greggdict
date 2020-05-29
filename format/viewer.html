@@ -1,0 +1,79 @@
+<html>
+  <head>
+    <title>Viewer</title>
+    <style>
+      * { margin: 0; padding: 0; }
+
+      #overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      .dot {
+        position: absolute;
+        width: 5px;
+        height: 5px;
+        background: blue;
+      }
+      .dot.red {
+        background: red;
+        width: 10px;
+        height: 10px;
+      }
+      .dot.green {
+        background: yellow;
+        width: 10px;
+        height: 10px;
+      }
+      .text {
+        position: absolute;
+        font-family: "Times New Roman", serif;
+        letter-spacing: 4px;
+        font-size: 28px;
+        line-height: 80%;
+        padding: 2px 5px;
+        border: none;
+        border-bottom: solid 1px black;
+        border-right: solid 1px black;
+        cursor: pointer;
+      }
+      #img-wrapper {
+        display: inline-block;
+      }
+
+      #controls {
+        display: inline-block;
+        vertical-align: top;
+        font-family: Arial, sans-serif;
+        font-size: 24px;
+        margin: 10px 3px;
+      }
+      input {
+        margin-top: 10px;
+        font-size: 20px;
+        width: 140px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="img-wrapper">
+      <div id="overlay"></div>
+      <img id="img" src=""/>
+    </div>
+    <div id="controls">
+      <div id="file">013</div>
+      <div>
+        <span id="errors"></span>
+        <span id="fixed"></span>
+      </div>
+      <div>
+        <span id="col-0"></span>
+        <span id="col-1"></span>
+        <span id="col-2"></span>
+      </div>
+      <div><input type="text" id="search"></div>
+    </div>
+    <script src="viewer.js"></script>
+  </body>
+</html>
