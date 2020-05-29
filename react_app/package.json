@@ -1,0 +1,21 @@
+{
+  "name": "greggdict",
+  "version": "0.0.1",
+  "description": "Gregg Shorthand Dictionary",
+  "main": "index.js",
+  "author": "Richard Liu (richyliu)",
+  "license": "MIT",
+  "scripts": {
+    "start": "parcel -p 8000 src/index.html",
+    "build": "parcel build src/index.html"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4"
+  },
+  "dependencies": {
+    "autoprefixer": "^9.8.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "tailwindcss": "^1.4.6"
+  }
+}
