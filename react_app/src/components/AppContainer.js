@@ -1,7 +1,9 @@
 import React from 'react';
 
+import App from './App';
+
 const AppContainer = () => {
-  return <div className="font-serif text-lg m-3">Hello, world</div>;
+  return <App/>;
 };
 
 export default AppContainer;
