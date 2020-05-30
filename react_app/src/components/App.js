@@ -5,8 +5,7 @@ import ImageContainer from './ImageContainer';
 
 const App = () => {
   // current word the user has selected to look up in the dictionary
-  const [word, setWord] = useState({t: "San Bernardino", x: 37.5, y: 572.5, page: "318"});
-  console.log(word);
+  const [word, setWord] = useState(null);
 
   return (
     <div>

@@ -15,7 +15,7 @@ const words = reference.flatMap(p =>
 const fuse = new Fuse(words, {
   location: 0,
   distance: 0,
-  threshold: 0.15,
+  threshold: 0.2,
   // includeScore: true,
   keys: ['t'],
 });
@@ -23,7 +23,7 @@ const fuse = new Fuse(words, {
 const SearchContainer = ({ onSelectWord }) => {
   const [str, setStr] = useState('');
 
-  const suggestions = str.length > 0 ? fuse.search(str).map(a => a.item) : [];
+  const suggestions = str.length > 0 ? fuse.search(str).map(a => a.item) : null;
 
   function selectWord(word) {
     setStr('');
@@ -31,8 +31,12 @@ const SearchContainer = ({ onSelectWord }) => {
   }
 
   return (
-    <div className="m-2 inline-block">
-      <SearchInput value={str} onChange={setStr} />
+    <div className="m-2 inline-block text-lg">
+      <SearchInput
+        value={str}
+        onChange={setStr}
+        onEnter={() => selectWord(suggestions[0])}
+      />
       <SearchSuggestions suggestions={suggestions} onClick={selectWord} />
     </div>
   );
