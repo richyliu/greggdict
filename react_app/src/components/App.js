@@ -7,11 +7,11 @@ import Divider from './Divider';
 import FAQ from './FAQ';
 import Footer from './Footer';
 import GithubCorner from './GithubCorner';
+import { series } from '../settings';
 
 const App = () => {
   // current word the user has selected to look up in the dictionary
   const [word, setWord] = useState(null);
-  const series = ['Simplified'];
   const [curSeries, setSeries] = useState(series[0]);
 
   return (

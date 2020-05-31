@@ -21,9 +21,11 @@ const SearchContainer = ({
       .then(res => {
         if (res.ok) return res.json();
         else {
-          alert('Could not get the dictionary. Please report this error');
+          alert(
+            `Could not get the dictionary for ${curSeries}. This error has been automatically reported`
+          );
           throw new Error(
-            `Could not get reference json for assetsRoot: ${assetsRoot} and series: ${curSeries}. Error: ${res.statusText}`
+            `Could not get reference json for assetsRoot: ${assetsRoot} and series: ${curSeries}`
           );
         }
       })
@@ -32,10 +34,6 @@ const SearchContainer = ({
           setWords(
             reference.flatMap(p => p.words.map(w => ({ ...w, page: p.page })))
           );
-      })
-      .catch(e => {
-        alert('Network error. Are you offline?');
-        throw new Error(e);
       });
 
     return () => (canceled = true);

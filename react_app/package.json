@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "start": "parcel -p 8000 src/index.html",
-    "build": "rm -rf dist/ && parcel build src/index.html",
+    "build": "rm -rf dist/ && parcel build --no-source-maps src/index.html",
     "deploy-prod": "surge dist/ gregg.surge.sh",
     "deploy-prerelease": "surge dist/ gregg-prereleas.surge.sh"
   },
@@ -14,6 +14,7 @@
     "parcel-bundler": "^1.12.4"
   },
   "dependencies": {
+    "@sentry/browser": "^5.15.5",
     "autoprefixer": "^9.8.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

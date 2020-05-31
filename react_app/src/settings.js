@@ -5,4 +5,7 @@ const version = 'v0.0.2';
 const assetsRoot =
   'https://cdn.jsdelivr.net/gh/richyliu/greggdict@3ce45f5204decf5886e68fdb6a2be55be22ca257/assets';
 
-export { version, assetsRoot };
+// list of available shorthand series
+const series = ['Simplified'];
+
+export { version, assetsRoot, series };
