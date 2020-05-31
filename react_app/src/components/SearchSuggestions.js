@@ -11,12 +11,17 @@ const SuggestionItem = ({ text, onClick, selected }) => (
   </div>
 );
 
-const SearchSuggestions = ({ suggestions, onClick, selected }) =>
-  suggestions === null ? (
-    <div></div>
-  ) : (
-    <div className="bg-white absolute w-full z-20 shadow-lg rounded">
-      {suggestions.length === 0 ? (
+const SearchSuggestions = ({ suggestions, onClick, selected }) => (
+  <div
+    className={
+      'bg-white absolute w-full z-20 shadow-lg rounded transition ease-in-out duration-100 ' +
+      (suggestions !== null
+        ? 'transform opacity-100 scale-100'
+        : 'transform opacity-0 scale-95 pointer-events-none')
+    }
+  >
+    {suggestions &&
+      (suggestions.length === 0 ? (
         <div className="py-1">
           <SuggestionItem
             text={<i>No results found</i>}
@@ -25,7 +30,7 @@ const SearchSuggestions = ({ suggestions, onClick, selected }) =>
           />
         </div>
       ) : (
-        <div className="overflow-y-scroll" style={{maxHeight: '10rem'}}>
+        <div className="overflow-y-scroll" style={{ maxHeight: '10rem' }}>
           {suggestions.slice(0, SEARCH_LIMIT).map((sug, i) => (
             <SuggestionItem
               selected={i === selected}
@@ -38,8 +43,8 @@ const SearchSuggestions = ({ suggestions, onClick, selected }) =>
             <SuggestionItem text="..." onClick={() => {}} />
           )}
         </div>
-      )}
-    </div>
-  );
+      ))}
+  </div>
+);
 
 export default SearchSuggestions;

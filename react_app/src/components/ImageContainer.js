@@ -1,38 +1,24 @@
 import React, { useState } from 'react';
 
-import simplifiedImages from '../assets/Simplified/pages/*.png';
-
 import ImageDisplay from './ImageDisplay';
 import ImageControls from './ImageControls';
+import { assetsRoot } from '../settings';
 
 const ImageContainer = ({ word, series }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  let images = null;
-
-  // we have to do it in this convoluted way because it's the only way for
-  // Parcel to recognize the file
-  if (series === 'Simplified') images = simplifiedImages;
-  else {
-    alert(`Images not found for series: ${series}`);
-    throw new Error(
-      `Images not found for series: ${series}. Please report this error.`
-    );
-  }
+  const image = word && `${assetsRoot}/${series}/pages/${word.page}.png`;
 
   return (
     <div className="my-3">
-      <ImageDisplay
-        word={word}
-        isExpanded={isExpanded}
-        image={word && images[word.page]}
-      />
-      <ImageControls
-        isDisabled={word === null}
-        isExpanded={isExpanded}
-        setIsExpanded={setIsExpanded}
-        fullImageUrl={word && images[word.page]}
-      />
+      <ImageDisplay word={word} isExpanded={isExpanded} image={image} />
+      {word && (
+        <ImageControls
+          isExpanded={isExpanded}
+          setIsExpanded={setIsExpanded}
+          fullImageUrl={image}
+        />
+      )}
     </div>
   );
 };

@@ -1,48 +1,65 @@
 @tailwind base;
-
 @tailwind components;
-
 @tailwind utilities;
 
 
-.bounce {
-  animation: bounce 2s infinite;
-}
-
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% {
-    transform: translateY(0);
-  }
-  40% {
-    transform: translateY(-30px);
-  }
-  60% {
-    transform: translateY(-15px);
-  }
-}
-
-
 /* Source: http://tholman.com/github-corners/ */
-.github-corner:hover .octo-arm{
-    animation:octocat-wave 560ms ease-in-out
+.github-corner svg {
+  width: 80px;
+  height: 80px;
+  fill: #151513;
+  color: #fff;
+  position: absolute;
+  top: 0;
+  border: 0;
+  right: 0;
 }
-@keyframes octocat-wave{
-    0%,100%{
-        transform:rotate(0)
-    }
-    20%,60%{
-        transform:rotate(-25deg)
-    }
-    40%,80%{
-        transform:rotate(10deg)
-    }
+.octo-arm {
+  transform-origin: 130px 106px;
 }
-@media (max-width:500px){
-    .github-corner:hover .octo-arm{
-        animation:none
-    }
-    .github-corner .octo-arm{
-        animation:octocat-wave 560ms ease-in-out
-    }
+.github-corner:hover .octo-arm {
+  animation:octocat-wave 560ms ease-in-out;
+}
+@keyframes octocat-wave {
+  0%, 100% { transform: rotate(0); }
+  20%, 60% { transform: rotate(-25deg); }
+  40%, 80% { transform: rotate(10deg); }
+}
+@media (max-width:500px) {
+  .github-corner:hover .octo-arm {
+    animation: none;
+  }
+  .github-corner .octo-arm {
+    animation: octocat-wave 560ms ease-in-out;
+  }
+  .github-corner svg {
+    width: 60px;
+    height: 60px;
+  }
 }
 
+
+/* Source: https://tobiasahlin.com/spinkit/ */
+.spinner {
+  margin: 30px auto 0;
+  width: 70px;
+  text-align: center;
+}
+.spinner > div {
+  width: 18px;
+  height: 18px;
+  background-color: #333;
+  border-radius: 100%;
+  display: inline-block;
+  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+.spinner .bounce1 {
+  animation-delay: -0.32s;
+}
+.spinner .bounce2 {
+  animation-delay: -0.16s;
+}
+@keyframes sk-bouncedelay {
+  0%, 80%, 100% { transform: scale(0); }
+  40% { transform: scale(1.0); }
+}

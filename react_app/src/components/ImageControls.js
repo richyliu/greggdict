@@ -1,21 +1,10 @@
 import React, { useState } from 'react';
 
-const ImageControls = ({
-  isDisabled,
-  isExpanded,
-  setIsExpanded,
-  fullImageUrl,
-}) => (
+const ImageControls = ({ isExpanded, setIsExpanded, fullImageUrl }) => (
   <div className="my-3">
     <button
-      className={
-        'px-2 py-1 mr-2 rounded-lg ' +
-        (isDisabled
-          ? 'cursor-not-allowed text-gray-600 bg-gray-200'
-          : 'bg-gray-900 text-white')
-      }
+      className="px-2 py-1 mr-2 rounded-lg bg-gray-900 text-white"
       onClick={() => setIsExpanded(s => !s)}
-      disabled={isDisabled}
     >
       {isExpanded ? (
         <div>
@@ -54,14 +43,8 @@ const ImageControls = ({
       )}
     </button>
     <button
-      className={
-        'px-2 py-1 mr-2 rounded-lg ' +
-        (isDisabled
-          ? 'cursor-not-allowed text-gray-600 bg-gray-200'
-          : 'border border-black')
-      }
+      className="px-2 py-1 mr-2 rounded-lg border border-black"
       onClick={() => window.open(fullImageUrl)}
-      disabled={isDisabled}
     >
       <svg
         aria-hidden="true"

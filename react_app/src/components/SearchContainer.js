@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 
 import SearchInput from './SearchInput';
 import SearchSuggestions from './SearchSuggestions';
+import { assetsRoot } from '../settings';
 
 const SearchContainer = ({
   onSelectWord,
@@ -14,26 +15,30 @@ const SearchContainer = ({
 
   // get the reference dictionary for the series
   useEffect(() => {
-    let promise = null;
+    let canceled = false;
 
-    // we have to do it in this convoluted way because it's the only way for
-    // Parcel to recognize the file
-    if (curSeries === 'Simplified')
-      promise = import('../assets/Simplified/reference.json');
-    else {
-      alert(`Dictionary not found: ${curSeries}`);
-      throw new Error(
-        `Dictionary not found: ${curSeries}. Please report this error.`
-      );
-    }
+    fetch(`${assetsRoot}/${curSeries}/reference.json`)
+      .then(res => {
+        if (res.ok) return res.json();
+        else {
+          alert('Could not get the dictionary. Please report this error');
+          throw new Error(
+            `Could not get reference json for assetsRoot: ${assetsRoot} and series: ${curSeries}. Error: ${res.statusText}`
+          );
+        }
+      })
+      .then(reference => {
+        if (!canceled)
+          setWords(
+            reference.flatMap(p => p.words.map(w => ({ ...w, page: p.page })))
+          );
+      })
+      .catch(e => {
+        alert('Network error. Are you offline?');
+        throw new Error(e);
+      });
 
-    promise.then(reference => {
-      setWords(
-        reference.flatMap(p => p.words.map(w => ({ ...w, page: p.page })))
-      );
-    });
-
-    return () => {};
+    return () => (canceled = true);
   }, [curSeries]);
 
   const [str, setStr] = useState('');

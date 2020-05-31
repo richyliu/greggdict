@@ -1,0 +1,8 @@
+// current version
+const version = 'v0.0.2-prerelease';
+
+// root for the reference.json and the pages/ folder for images
+const assetsRoot =
+  'https://cdn.jsdelivr.net/gh/richyliu/greggdict@3ce45f5204decf5886e68fdb6a2be55be22ca257/assets';
+
+export { version, assetsRoot };

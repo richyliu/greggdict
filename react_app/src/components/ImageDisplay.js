@@ -1,9 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+
+/* sytles for the spinner is in index.css */
+const LoadingSpinner = () => (
+  <div className="spinner">
+    <div className="bounce1"></div>
+    <div className="bounce2"></div>
+    <div className="bounce3"></div>
+  </div>
+);
 
 const DISPLAY_SIZE_SMALL = { x: 365, y: 100, offset: 5 };
 const DISPLAY_SIZE_LARGE = { x: 450, y: 180, offset: 10 };
 
 const ImageDisplay = ({ word, isExpanded, image }) => {
+  const [loading, setLoading] = useState(true);
+
+  // reset loading once there is a new word
+  useEffect(() => setLoading(true), [word]);
+
   let displaySize = isExpanded ? DISPLAY_SIZE_LARGE : DISPLAY_SIZE_SMALL;
 
   return (
@@ -16,15 +30,19 @@ const ImageDisplay = ({ word, isExpanded, image }) => {
         }}
       >
         {word ? (
-          <img
-            style={{
-              top: `-${word.y - displaySize.y / 2}px`,
-              left: `-${word.x - displaySize.offset}px`,
-            }}
-            className="absolute max-w-none"
-            src={image}
-            alt=""
-          />
+          <>
+            <img
+              style={{
+                top: `-${word.y - displaySize.y / 2}px`,
+                left: `-${word.x - displaySize.offset}px`,
+              }}
+              className={'absolute max-w-none ' + (loading ? 'invisible' : '')}
+              src={image}
+              onLoad={() => setLoading(false)}
+              alt={'Gregg shorthand for word: ' + word.t}
+            />
+            {loading && <LoadingSpinner />}
+          </>
         ) : (
           <div className="p-1">Search for a word to get started</div>
         )}

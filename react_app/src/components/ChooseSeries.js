@@ -10,10 +10,6 @@ const ChooseSeries = ({ series, curSeries, onChoose }) => {
     if (!dropdown.current || !button.current) return;
 
     function onClick(e) {
-      console.log(
-        dropdown.current.contains(e.target),
-        button.current.contains(e.target)
-      );
       if (
         !dropdown.current.contains(e.target) &&
         !button.current.contains(e.target)
@@ -32,7 +28,7 @@ const ChooseSeries = ({ series, curSeries, onChoose }) => {
         onClick={() => setShowDropdown(s => !s)}
         ref={button}
       >
-        <span className="w-12 truncate">{curSeries}</span>
+        <span>{curSeries}</span>
         <svg
           fill="currentColor"
           viewBox="0 0 20 20"
@@ -61,7 +57,7 @@ const ChooseSeries = ({ series, curSeries, onChoose }) => {
             {series.map(s => (
               <button
                 href="#"
-                className="block px-3 py-2 w-full text-left leading-5 text-gray-900 hover:bg-gray-100"
+                className="block px-3 py-2 w-full text-left leading-6 text-gray-900 hover:bg-gray-100"
                 onClick={() => {
                   onChoose(s);
                   setShowDropdown(false);
@@ -73,7 +69,7 @@ const ChooseSeries = ({ series, curSeries, onChoose }) => {
             ))}
             <div
               href="#"
-              className="block px-3 py-2 w-full text-left leading-5 text-gray-600  text-sm"
+              className="block px-3 py-2 w-full text-left leading-6 text-gray-600  text-sm"
             >
               Don't see your series? See FAQ
             </div>

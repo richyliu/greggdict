@@ -1,6 +1,6 @@
 import React from 'react';
 
-import version from '../version';
+import { version } from '../settings';
 
 const Footer = () => (
   <div className="mt-8 mb-6 sm:mt-12 sm:mb-8 text-center text-gray-600">

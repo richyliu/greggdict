@@ -10,13 +10,11 @@ const Link = ({ href, children }) => (
 );
 
 const QuestionAndAnswer = ({ question, answer }) => (
-  <div className="my-6 sm:my-8 leading-snug">
-    <p className="mb-1 text-lg">
-      <strong className="mr-1">Q:</strong>
+  <div className="my-8 sm:my-10 leading-snug">
+    <h3 className="mb-2 text-xl">
       {question}
-    </p>
-    <p>
-      <strong className="mr-1">A:</strong>
+    </h3>
+    <p className="">
       {answer}
     </p>
   </div>
@@ -26,22 +24,10 @@ const FAQ = () => (
   <div>
     <h2
       id="faq"
-      className="px-1 pt-2 my-2 sm:my-3 text-2xl border-b border-gray-600"
+      className="px-1 pt-2 my-2 sm:my-3 text-3xl border-b border-gray-600 font-light"
     >
       FAQ
     </h2>
-    <QuestionAndAnswer
-      question="What do I do if something doesn't work or there is an incorrect word?"
-      answer={
-        <span>
-          You can report it using the feedback{' '}
-          <Link href="https://docs.google.com/forms/d/e/1FAIpQLSeFnUw8-oYluUpsaORb1krYowiq_JGeTuu_ibFhiIkKl5HJig/viewform?usp=sf_link">
-            Google Form
-          </Link>
-          .
-        </span>
-      }
-    />
     <QuestionAndAnswer
       question="Why don't I see my series of Gregg Shorthand?"
       answer={
@@ -52,6 +38,18 @@ const FAQ = () => (
             Vote here
           </Link>{' '}
           for your Gregg series.
+        </span>
+      }
+    />
+    <QuestionAndAnswer
+      question="What do I do if something doesn't work or there is an incorrect word?"
+      answer={
+        <span>
+          You can report it using the feedback{' '}
+          <Link href="https://docs.google.com/forms/d/e/1FAIpQLSeFnUw8-oYluUpsaORb1krYowiq_JGeTuu_ibFhiIkKl5HJig/viewform?usp=sf_link">
+            Google Form
+          </Link>
+          .
         </span>
       }
     />
