@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from 'react';
-
-import Fuse from 'fuse.js';
+import React, { useEffect, useState, useMemo } from 'react';
 
 import reference from '../assets/reference.json';
 
@@ -12,18 +10,19 @@ const words = reference.flatMap(p =>
   p.words.map(w => ({ ...w, page: p.page }))
 );
 
-const fuse = new Fuse(words, {
-  location: 0,
-  distance: 0,
-  threshold: 0.2,
-  // includeScore: true,
-  keys: ['t'],
-});
-
 const SearchContainer = ({ onSelectWord }) => {
   const [str, setStr] = useState('');
 
-  const suggestions = str.length > 0 ? fuse.search(str).map(a => a.item) : null;
+  // find suggestions by matching start of search string with the words
+  const sugs =
+    str.length === 0
+      ? null
+      : words.filter(w => w.t.toLowerCase().startsWith(str.toLowerCase()));
+
+  // the suggestion item that is currently selected (on desktop)
+  const [sel, setSel] = useState(0);
+  // reset selection back to 0 when the search string changes
+  useEffect(() => setSel(0), [str]);
 
   function selectWord(word) {
     setStr('');
@@ -31,13 +30,19 @@ const SearchContainer = ({ onSelectWord }) => {
   }
 
   return (
-    <div className="m-2 inline-block text-lg">
+    <div className="my-4 text-lg relative">
       <SearchInput
         value={str}
         onChange={setStr}
-        onEnter={() => selectWord(suggestions[0])}
+        onEnter={() => sugs && sugs[sel] && selectWord(sugs[sel])}
+        onArrowDown={() => sel < sugs.length - 1 && setSel(sel + 1)}
+        onArrowUp={() => sel > 0 && setSel(sel - 1)}
       />
-      <SearchSuggestions suggestions={suggestions} onClick={selectWord} />
+      <SearchSuggestions
+        suggestions={sugs}
+        onClick={selectWord}
+        selected={sel}
+      />
     </div>
   );
 };
