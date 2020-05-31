@@ -4,7 +4,7 @@ const SEARCH_LIMIT = 50;
 
 const SuggestionItem = ({ text, onClick, selected }) => (
   <div
-    className="px-2 py-1 hover:bg-gray-300 cursor-pointer"
+    className="px-2 py-1 hover:bg-gray-100 cursor-pointer sm:py-2"
     onClick={onClick}
   >
     {selected ? <strong>{text}</strong> : text}
@@ -15,9 +15,9 @@ const SearchSuggestions = ({ suggestions, onClick, selected }) =>
   suggestions === null ? (
     <div></div>
   ) : (
-    <div className="bg-gray-200 absolute w-full z-20">
+    <div className="bg-white absolute w-full z-20 shadow-lg rounded">
       {suggestions.length === 0 ? (
-        <div>
+        <div className="py-1">
           <SuggestionItem
             text={<i>No results found</i>}
             onClick={() => {}}

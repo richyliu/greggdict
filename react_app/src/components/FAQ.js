@@ -3,7 +3,7 @@ import React from 'react';
 const Link = ({ href, children }) => (
   <a
     href={href}
-    className="text-blue-700 visited:text-purple-700 border-b border-transparent hover:border-current"
+    className="font-bold border-b border-transparent hover:border-current"
   >
     {children}
   </a>
@@ -34,7 +34,10 @@ const FAQ = () => (
       question="What do I do if something doesn't work or there is an incorrect word?"
       answer={
         <span>
-          You can report it using the feedback <Link href="#">Google Form</Link>
+          You can report it using the feedback{' '}
+          <Link href="https://docs.google.com/forms/d/e/1FAIpQLSeFnUw8-oYluUpsaORb1krYowiq_JGeTuu_ibFhiIkKl5HJig/viewform?usp=sf_link">
+            Google Form
+          </Link>
           .
         </span>
       }
@@ -44,13 +47,16 @@ const FAQ = () => (
       answer={
         <span>
           Currently only simplified is supported. I will add more series if
-          people will find it useful. You can submit{' '}
-          <Link href="#">this form </Link> to vote for your Gregg series.
+          people find it useful.{' '}
+          <Link href="https://docs.google.com/forms/d/e/1FAIpQLSe7Dhv-7SiZavvGoYE0Fy-n9n7OCmUQjhUCIw0hMjePtQZntA/viewform?usp=sf_link">
+            Vote here
+          </Link>{' '}
+          for your Gregg series.
         </span>
       }
     />
     <QuestionAndAnswer
-      question="Why are common words missing?"
+      question="Why are some common words missing?"
       answer={
         <span>
           This dictionary tool uses scanned PDFs of dictionaries, which were
@@ -71,7 +77,7 @@ const FAQ = () => (
         <span>
           I used OCR to do text detection on the dictionary images, and then
           built a web application with React to make it searchable. The code is{' '}
-          <Link href="#">open source</Link>
+          <Link href="https://github.com/richyliu/greggdict">open source</Link>
         </span>
       }
     />
@@ -79,7 +85,10 @@ const FAQ = () => (
       question="I have another question!"
       answer={
         <span>
-          Ask your questions with <Link href="#">this form</Link>
+          Ask your questions using the{' '}
+          <Link href="https://docs.google.com/forms/d/e/1FAIpQLSeFnUw8-oYluUpsaORb1krYowiq_JGeTuu_ibFhiIkKl5HJig/viewform?usp=sf_link">
+            feedback form
+          </Link>
         </span>
       }
     />

@@ -3,22 +3,31 @@ import React, { useState } from 'react';
 import SearchContainer from './SearchContainer';
 import ImageContainer from './ImageContainer';
 import Header from './Header';
-import FAQ from './FAQ';
 import Divider from './Divider';
+import FAQ from './FAQ';
+import Footer from './Footer';
+import GithubCorner from './GithubCorner';
 
 const App = () => {
   // current word the user has selected to look up in the dictionary
-  // TODO: for testing
   const [word, setWord] = useState(null);
-  // const [word, setWord] = useState({ t: 'boa', x: 437.5, y: 235.5, page: '027' });
+  const series = ['Simplified'];
+  const [curSeries, setSeries] = useState(series[0]);
 
   return (
     <div className="font-sans max-w-lg mx-auto pt-1 px-2 sm:px-3">
+      <GithubCorner />
       <Header />
-      <SearchContainer onSelectWord={setWord} />
-      <ImageContainer word={word} />
+      <SearchContainer
+        onSelectWord={setWord}
+        seriesList={series}
+        curSeries={curSeries}
+        setSeries={setSeries}
+      />
+      <ImageContainer word={word} series={curSeries} />
       <Divider />
       <FAQ />
+      <Footer />
     </div>
   );
 };

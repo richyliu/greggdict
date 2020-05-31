@@ -1,8 +1,7 @@
 {
   "name": "greggdict",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Gregg Shorthand Dictionary",
-  "main": "index.js",
   "author": "Richard Liu (richyliu)",
   "license": "MIT",
   "scripts": {
@@ -14,7 +13,6 @@
   },
   "dependencies": {
     "autoprefixer": "^9.8.0",
-    "fuse.js": "^6.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "tailwindcss": "^1.4.6"
