@@ -7,6 +7,16 @@ words you don't know.
 
 Try it online at [https://gregg.surge.sh](https://gregg.surge.sh)
 
+The prerelease for each version is available at
+[https://gregg-prerelease.surge.sh](https://gregg-prerelease.surge.sh). Note
+that it may be buggy.
+
+## Requesting other series
+
+If you would like to me to add series of Gregg Shorthand other than simplified
+(which has already been added), fill out [this
+form](https://docs.google.com/forms/d/e/1FAIpQLSe7Dhv-7SiZavvGoYE0Fy-n9n7OCmUQjhUCIw0hMjePtQZntA/viewform)
+
 ## The OCR Process
 
 The process of identifying the words from the raw scanned images of the
