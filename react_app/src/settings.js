@@ -1,5 +1,5 @@
 // current version
-const version = 'v0.0.2-prerelease';
+const version = 'v0.0.3-prerelease';
 
 // root for the reference.json and the pages/ folder for images
 const assetsRoot =
