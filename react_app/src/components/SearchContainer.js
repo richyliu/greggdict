@@ -32,7 +32,9 @@ const SearchContainer = ({
       .then(reference => {
         if (!canceled)
           setWords(
-            reference.flatMap(p => p.words.map(w => ({ ...w, page: p.page })))
+            (reference || []).flatMap(p =>
+              p.words.map(w => ({ ...w, page: p.page }))
+            )
           );
       });
 

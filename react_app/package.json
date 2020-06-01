@@ -8,7 +8,7 @@
     "start": "parcel -p 8000 src/index.html",
     "build": "rm -rf dist/ && parcel build --no-source-maps src/index.html",
     "deploy-prod": "surge dist/ gregg.surge.sh",
-    "deploy-prerelease": "surge dist/ gregg-prereleas.surge.sh"
+    "deploy-prerelease": "surge dist/ gregg-prerelease.surge.sh"
   },
   "devDependencies": {
     "parcel-bundler": "^1.12.4"

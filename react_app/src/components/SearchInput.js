@@ -35,6 +35,7 @@ const SearchInput = ({
           autoComplete="off"
           autoCorrect="off"
           autoCapitalize="off"
+          autoFocus
           value={value}
           onChange={e => onChange(e.target.value)}
           onKeyDown={keyDown}

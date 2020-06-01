@@ -37,14 +37,14 @@ const ImageDisplay = ({ word, isExpanded, image }) => {
                 left: `-${word.x - displaySize.offset}px`,
               }}
               className={'absolute max-w-none ' + (loading ? 'invisible' : '')}
-              src={image}
-              onLoad={() => setLoading(false)}
+              src={image + '?cachebreaker=' + word.t}
+              onLoad={() => setTimeout(() => setLoading(false), 300)}
               alt={'Gregg shorthand for word: ' + word.t}
             />
             {loading && <LoadingSpinner />}
           </>
         ) : (
-          <div className="p-1">Search for a word to get started</div>
+          <div className="p-1">Type a word above to get started</div>
         )}
       </div>
     </div>
