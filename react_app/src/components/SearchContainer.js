@@ -65,7 +65,7 @@ const SearchContainer = ({
         value={str}
         onChange={setStr}
         onEnter={() => sugs && sugs[sel] && selectWord(sugs[sel])}
-        onArrowDown={() => sel < sugs.length - 1 && setSel(sel + 1)}
+        onArrowDown={() => sugs && sel < sugs.length - 1 && setSel(sel + 1)}
         onArrowUp={() => sel > 0 && setSel(sel - 1)}
         series={seriesList}
         curSeries={curSeries}
