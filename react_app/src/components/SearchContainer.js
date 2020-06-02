@@ -15,30 +15,32 @@ const SearchContainer = ({
 
   // get the reference dictionary for the series
   useEffect(() => {
-    let canceled = false;
+    const xhr = new XMLHttpRequest();
 
-    fetch(`${assetsRoot}/${curSeries}/reference.json`)
-      .then(res => {
-        if (res.ok) return res.json();
-        else {
-          alert(
-            `Could not get the dictionary for ${curSeries}. This error has been automatically reported`
-          );
-          throw new Error(
-            `Could not get reference json for assetsRoot: ${assetsRoot} and series: ${curSeries}`
-          );
-        }
-      })
-      .then(reference => {
-        if (!canceled)
-          setWords(
-            (reference || []).flatMap(p =>
-              p.words.map(w => ({ ...w, page: p.page }))
-            )
-          );
-      });
+    // Setup our listener to process compeleted requests
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState !== 4) return;
 
-    return () => (canceled = true);
+      if (xhr.status === 200) {
+        const reference = JSON.parse(xhr.responseText);
+        setWords(
+          (reference || []).flatMap(p =>
+            p.words.map(w => ({ ...w, page: p.page }))
+          )
+        );
+      } else {
+        alert(
+          `Could not get the dictionary for ${curSeries}. This error has been automatically reported`
+        );
+        throw new Error(
+          `Could not get reference json for assetsRoot: ${assetsRoot} and series: ${curSeries}`
+        );
+      }
+    };
+    xhr.open('GET', `${assetsRoot}/${curSeries}/reference.json`);
+    xhr.send();
+
+    return () => xhr.abort();
   }, [curSeries]);
 
   const [str, setStr] = useState('');
