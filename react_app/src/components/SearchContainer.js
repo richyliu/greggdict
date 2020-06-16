@@ -49,7 +49,7 @@ const SearchContainer = ({
   const sugs =
     str.length === 0
       ? null
-      : words.filter(w => w.t.toLowerCase().startsWith(str.toLowerCase()));
+      : words.filter(w => w.t.toLowerCase().startsWith(str.trim().toLowerCase()));
 
   // the suggestion item that is currently selected (on desktop)
   const [sel, setSel] = useState(0);
