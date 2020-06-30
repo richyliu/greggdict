@@ -30,7 +30,7 @@ const SearchSuggestions = ({ suggestions, onClick, selected }) => (
           />
         </div>
       ) : (
-        <div className="overflow-y-scroll" style={{ maxHeight: '10rem' }}>
+        <div className="overflow-y-auto" style={{ maxHeight: '10rem' }}>
           {suggestions.slice(0, SEARCH_LIMIT).map((sug, i) => (
             <SuggestionItem
               selected={i === selected}

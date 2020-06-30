@@ -21,7 +21,7 @@ const ImageDisplay = ({ word, isExpanded, image }) => {
   let displaySize = isExpanded ? DISPLAY_SIZE_LARGE : DISPLAY_SIZE_SMALL;
 
   return (
-    <div className="max-w-screen overflow-x-scroll">
+    <div className="max-w-screen overflow-x-auto">
       <div
         className="relative overflow-hidden border border-black"
         style={{
