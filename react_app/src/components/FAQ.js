@@ -11,12 +11,8 @@ const Link = ({ href, children }) => (
 
 const QuestionAndAnswer = ({ question, answer }) => (
   <div className="my-8 sm:my-10 leading-snug">
-    <h3 className="mb-2 text-xl">
-      {question}
-    </h3>
-    <p className="">
-      {answer}
-    </p>
+    <h3 className="mb-2 text-xl">{question}</h3>
+    <p className="">{answer}</p>
   </div>
 );
 
@@ -32,12 +28,8 @@ const FAQ = () => (
       question="Why don't I see my series of Gregg Shorthand?"
       answer={
         <span>
-          Currently only simplified is supported. I will add more series if
-          people find it useful.{' '}
-          <Link href="https://docs.google.com/forms/d/e/1FAIpQLSe7Dhv-7SiZavvGoYE0Fy-n9n7OCmUQjhUCIw0hMjePtQZntA/viewform?usp=sf_link">
-            Vote here
-          </Link>{' '}
-          for your Gregg series.
+          Currently only simplified is supported. I may add more series in the
+          future.
         </span>
       }
     />
