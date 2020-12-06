@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 
 import SearchInput from './SearchInput';
 import SearchSuggestions from './SearchSuggestions';
-import { assetsRoot } from '../settings';
+import { dictRoot } from '../settings';
 
 const SearchContainer = ({
   onSelectWord,
@@ -33,11 +33,11 @@ const SearchContainer = ({
           `Could not get the dictionary for ${curSeries}. This error has been automatically reported`
         );
         throw new Error(
-          `Could not get reference json for assetsRoot: ${assetsRoot} and series: ${curSeries}`
+          `Could not get reference json for dictRoot: ${dictRoot} and series: ${curSeries}`
         );
       }
     };
-    xhr.open('GET', `${assetsRoot}/${curSeries}/reference.json`);
+    xhr.open('GET', `${dictRoot}/${curSeries}/reference.json`);
     xhr.send();
 
     return () => xhr.abort();

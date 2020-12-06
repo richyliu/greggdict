@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 
 import ImageDisplay from './ImageDisplay';
 import ImageControls from './ImageControls';
-import { assetsRoot } from '../settings';
+import { imageRoot } from '../settings';
 
 const ImageContainer = ({ word, series }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const image = word && `${assetsRoot}/${series}/pages/${word.page}.png`;
+  const image = word && `${imageRoot}/${series}/pages/${word.page}.png`;
 
   return (
     <div className="my-3">
