@@ -1,6 +1,6 @@
 {
   "name": "greggdict",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "description": "Gregg Shorthand Dictionary",
   "author": "Richard Liu (richyliu)",
   "license": "MIT",
@@ -11,16 +11,14 @@
     "deploy-prerelease": "surge dist/ gregg-prerelease.surge.sh"
   },
   "devDependencies": {
-    "parcel-bundler": "^1.12.4"
+    "parcel": "^2.0.0-nightly.532"
   },
   "dependencies": {
-    "@sentry/browser": "^5.15.5",
-    "autoprefixer": "^9.8.0",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "tailwindcss": "^1.4.6"
-  },
-  "resolutions": {
-    "node-forge": "0.10.0"
+    "@sentry/browser": "^5.30.0",
+    "autoprefixer": "^10.2.1",
+    "postcss": "^8.2.4",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "tailwindcss": "^2.0.2"
   }
 }

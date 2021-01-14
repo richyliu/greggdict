@@ -5,7 +5,7 @@ import ImageControls from './ImageControls';
 import { imageRoot } from '../settings';
 
 const ImageContainer = ({ word, series }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true);
 
   const image = word && `${imageRoot}/${series}/pages/${word.page}.png`;
 

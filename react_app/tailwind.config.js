@@ -1,5 +1,7 @@
 module.exports = {
-  purge: ['./src/**/*.html', './src/**/*.css', './src/**/*.js'],
+  purge: {
+    content: ['./src/**/*.html', './src/**/*.css', './src/**/*.js'],
+  },
   theme: {
     fontFamily: {
       sans: ['Roboto', 'sans-serif'],
