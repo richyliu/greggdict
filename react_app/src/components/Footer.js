@@ -7,7 +7,7 @@ const Footer = () => (
     <a href="https://github.com/richyliu/greggdict/releases">
       {version}
     </a>{' '}
-    | &copy; Richard Liu 2020
+    | &copy; Richard Liu 2021
   </div>
 );
 
