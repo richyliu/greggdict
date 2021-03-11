@@ -45,7 +45,7 @@ const ChooseSeries = ({ series, curSeries, onChoose }) => {
 
       <div
         className={
-          'origin-top-right absolute right-0 mt-1 w-56 rounded-md shadow-lg bg-white z-50 transition ease-in-out duration-100 ' +
+          'origin-top-right absolute right-0 mt-1 w-56 rounded-md shadow-lg bg-white z-40 transition ease-in-out duration-100 ' +
           (showDropdown
             ? 'transform opacity-100 scale-100'
             : 'transform opacity-0 scale-95 pointer-events-none')
