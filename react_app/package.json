@@ -11,7 +11,7 @@
     "deploy-prerelease": "surge dist/ gregg-prerelease.surge.sh"
   },
   "devDependencies": {
-    "parcel": "^2.0.0-nightly.532"
+    "parcel": "^2.0.0-beta.1"
   },
   "dependencies": {
     "@sentry/browser": "^5.30.0",
