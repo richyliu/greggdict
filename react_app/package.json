@@ -7,7 +7,8 @@
   "scripts": {
     "start": "parcel -p 8000 src/index.html",
     "build": "rm -rf dist/ && parcel build --no-source-maps src/index.html",
-    "deploy-prerelease": "surge dist/ gregg-prerelease.surge.sh"
+    "deploy-prerelease": "surge dist/ gregg-prerelease.surge.sh",
+    "clean": "rm -rf dist/ && rm -rf .parcel-cache/"
   },
   "devDependencies": {
     "parcel": "^2.0.0-beta.1"

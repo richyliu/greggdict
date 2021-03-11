@@ -38,11 +38,11 @@ const App = () => {
 const NewDomainBanner = () => (
   <>
     <div className="fixed w-full z-50 bg-red-600">
-      <div className="max-w-lg mx-auto py-5 rounded-md shadow-md text-xl font-light text-white">
+      <div className="max-w-lg mx-auto py-3 sm:py-5 px-3 sm:text-lg md:text-xl font-light text-white">
         Notice: I have changed the domain to https://greggdict.rliu.dev/ (as of 2021-03-10).
       </div>
     </div>
-    <div className="h-12"></div>
+    <div className="h-16"></div>
   </>
 );
 
