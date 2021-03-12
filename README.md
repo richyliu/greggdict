@@ -5,7 +5,7 @@ style of shorthand which uses lines and loops to represent words. This app
 (built in React) is helpful in learning shorthand by allowing you to search up
 words you don't know.
 
-Try it online at [https://gregg.surge.sh](https://gregg.surge.sh)
+Try it online at [https://greggdict.rliu.dev](https://greggdict.rliu.dev)
 
 The prerelease for each version is available at
 [https://gregg-prerelease.surge.sh](https://gregg-prerelease.surge.sh). Note
