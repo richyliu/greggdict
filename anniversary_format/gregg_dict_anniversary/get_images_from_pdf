@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# Writes to out-001.png, out-002.png, etc.
+pdfimages -all input.pdf out

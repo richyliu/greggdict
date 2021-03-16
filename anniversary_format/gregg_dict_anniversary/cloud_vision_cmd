@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+if [[ ( $# -ne 1 || $1 == "-h" || $1 == "--help") ]]; then
+  echo "Usage: cloud_vision_cmd IMAGE"
+  exit
+fi
+
+curl \
+  -H "Authorization: Bearer "$(gcloud auth application-default print-access-token) \
+  -H "Content-Type: application/json; charset=utf-8" \
+  -d '{ "requests": [ { "image": { "content": "'$(base64 "$1")'" }, "features": [ { "type": "TEXT_DETECTION" } ] } ] }' \
+  https://vision.googleapis.com/v1/images:annotate
+
+
+# curl -X POST \
+# -H "Authorization: Bearer "$(gcloud auth application-default print-access-token) \
+# -H "Content-Type: application/json; charset=utf-8" \
+# -d @request.json \
+# https://vision.googleapis.com/v1/images:annotate
+
+# NOTE: need to set credentials also
+# export GOOGLE_APPLICATION_CREDENTIALS=/Users/richard/code/gregg_dict_anniversary/gregg-shorthand-07d924baf9f4.json

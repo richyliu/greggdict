@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# Make sure the URIs in request.json have the correct bucket name and folder
+
+curl -X POST \
+-H "Authorization: Bearer "$(gcloud auth application-default print-access-token) \
+-H "Content-Type: application/json; charset=utf-8" \
+-d @request.json \
+https://vision.googleapis.com/v1/images:asyncBatchAnnotate

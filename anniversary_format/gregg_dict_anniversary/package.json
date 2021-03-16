@@ -1,0 +1,15 @@
+{
+  "name": "image_ocr",
+  "version": "1.0.0",
+  "description": "## Image extraction",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx parcel index.html images/* output/* --open --port 8000"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "parcel": "^2.0.0-beta.2",
+    "string-pixel-width": "^1.10.0"
+  }
+}
