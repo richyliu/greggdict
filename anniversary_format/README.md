@@ -13,4 +13,8 @@ pdfimages -png input.pdf out
 Upload the images to a Google Storage Bucket and use the Cloud Vision API (see
 `cloud_vision_batch` file) to scan the text with OCR.
 
+## Automated parsing
 
+Automated parsing is done with the `parseData` function in `index.js`. This
+function is called by `viewer.js` for the browser (run `npm run start`) and
+`nodeRunner.js` for NodeJS.

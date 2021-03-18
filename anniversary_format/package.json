@@ -4,7 +4,7 @@
   "description": "## Image extraction",
   "main": "index.js",
   "scripts": {
-    "start": "npx parcel index.html images/* output/* --open --port 8000"
+    "start": "npx parcel index.html images/* output/* parsed/* --open --port 8000"
   },
   "author": "",
   "license": "ISC",

@@ -1,8 +1,14 @@
 const pixelWidth = require('string-pixel-width');
+const convertString = require('./confusables.js');
 
 function parseData(rawData) {
   let data = getTextAnnotations(rawData);
-  let filtered = filterJunk(data);
+  let converted = convertConfusables(data);
+  let cleaned = removeHeader(converted);
+  let filtered = filterJunk(cleaned);
+  // filtered.forEach(({ text }) => {
+  //   if ([...text].some(c => c.codePointAt(0) > 127)) console.log(`${text}`);
+  // });
   return filtered;
 }
 
@@ -49,7 +55,6 @@ function getTextAnnotations(rawData) {
     }
 
     // normalize vertices
-    console.warn('WARNING: normalized vertices in:', d);
     let v1 = d.vertices[0];
     let v2 = d.vertices[1];
     let v3 = d.vertices[2];
@@ -78,22 +83,44 @@ function getTextAnnotations(rawData) {
   return data;
 }
 
-// source: https://github.com/codebox/homoglyph/blob/master/raw_data/chars.txt
-const TABLE = {
-  с: 'c',
-};
+/**
+ * Change Unicode characters that look similar to ASCII characters to ASCII
+ */
+function convertConfusables(data) {
+  return data.map(d => ({ ...d, text: convertString(d.text) }));
+}
 
-// Returns the ASCII character the char looks like (if non ASCII)
-function toHomoglyph(char) {
-  if (char.charCodeAt(0) <= 127) return char;
+const HEADER_THRESHOLD = 50;
+/**
+ * Remove the "GREGG SHORTHAND DICTIONARY" and page number at the top of every page
+ */
+function removeHeader(data) {
+  let anchor = data.findIndex(d => d.text === 'GREGG');
+  if (anchor < 0) {
+    anchor = data.findIndex(d => d.text === 'SHORTHAND') - 1;
+    if (anchor < 0) {
+      console.log('[index.js]: ERROR: unable to find anchor');
+      return data;
+    }
+  }
 
-  console.log(char.charCodeAt(0));
-  if (TABLE[char]) return TABLE[char];
-
-  console.warn(
-    `Unable to find homoglyph for char ${char} (code: ${char.charCodeAt(0)})`
+  // average the y values of the bounding boxes of the header
+  let row = average(
+    data.slice(anchor, 3).flatMap(d => d.vertices.map(v => v.y))
   );
-  return char;
+
+  // remove text that is close to where the header row is
+  return data.filter(d => {
+    // console.log(d.text, Math.abs(average(d.vertices.map(v => v.y)) - row));
+    if (Math.abs(average(d.vertices.map(v => v.y)) - row) < HEADER_THRESHOLD) {
+      return false;
+    }
+    return true;
+  });
+}
+
+function average(nums) {
+  return nums.reduce((a, b) => a + b) / nums.length;
 }
 
 /**
@@ -108,20 +135,23 @@ function filterJunk(data) {
  * basis of the bounding box proportions and the text itself
  */
 function isUseful({ text, vertices }) {
-  // junk is typically at most 4 letters long
-  if (text.length > 4) return true;
-
-  // one char is definitely junk
-  if (text.length <= 1) return false;
-
   let textPixelWidth = pixelWidth(text, { font: 'Georgia', size: 66 });
   let rectWidth = vertWidth(vertices);
   let diff = Math.floor(Math.abs(rectWidth - textPixelWidth) * 100) / 100;
   let diffPercent = diff / textPixelWidth;
-  console.log(`diffPercent: ${diffPercent.toFixed(3)}, word: "${text}"`);
+  console.log(text, diffPercent);
 
-  // difference between bounding box width and text width has to be less than 1%
-  if (diffPercent < 0.1) return true;
+  return true;
+  if (text.length > 4) {
+    // higher threshold for longer words
+    return diffPercent < 0.5;
+  }
+
+  // two chars is definitely junk
+  if (text.length <= 2) return false;
+
+  // apply lower threshold for smaller words
+  if (diffPercent < 0.15) return true;
 
   // otherwise the text cannot be considered useful
   return false;

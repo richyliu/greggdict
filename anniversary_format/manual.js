@@ -1,33 +1,65 @@
-const IMG = 'images/p024.png';
+const DISPLAY_WIDTH = 800;
 
 const parseData = require('./index.js');
 
-const DISPLAY_WIDTH = 800;
+fetch('parsed/parsed01.json')
+  .then(r => r.json())
+  .then(withAllData);
 
-let pageName = IMG.slice(-7, -4);
-let dataUrl = `output/p${pageName}.json`;
+function withAllData(allData) {
+  let pages = Object.entries(allData);
+  let curImg = 22;
 
-let canvas = document.getElementById('canvas');
-let ctx = canvas.getContext('2d');
+  function loadPage() {
+    let [jsonName, data] = pages[curImg];
+    let img = `images/p${jsonName.slice(-8, -5)}.png`;
+    loadImage(data, img);
+  }
 
-let imageEl = document.querySelector('#img');
-imageEl.src = IMG;
-imageEl.onload = e => {
-  let scale = DISPLAY_WIDTH / imageEl.naturalWidth;
-  canvas.width = DISPLAY_WIDTH;
-  canvas.height = imageEl.naturalHeight * scale;
-  imageEl.style.width = DISPLAY_WIDTH + 'px';
+  document.body.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') {
+      curImg++;
+      loadPage();
+    } else if (e.key === 'ArrowLeft') {
+      if (curImg > 0) curImg--;
+      loadPage();
+    }
+  });
+  loadPage();
+}
 
-  fetch(dataUrl)
-    .then(r => r.json())
-    .then(d => parseData(d))
-    .then(d => main(d, scale))
-    .catch(e => {
-      console.error('Fetch or parse image error', e);
-    });
-};
+function loadImage(data, img) {
+  let canvas = document.getElementById('canvas');
+  let ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  document.querySelectorAll('.text-overlay').forEach(el => el.remove());
+  document.querySelectorAll('.page-info').forEach(el => el.remove());
 
-function main(data, scale) {
+  let imageEl = document.querySelector('#img');
+  imageEl.src = img;
+  imageEl.onload = e => {
+    let scale = DISPLAY_WIDTH / imageEl.naturalWidth;
+    canvas.width = DISPLAY_WIDTH;
+    canvas.height = imageEl.naturalHeight * scale;
+    imageEl.style.width = DISPLAY_WIDTH + 'px';
+
+    main(data, ctx, scale);
+
+    // draw page number info
+    let s = document.createElement('span');
+    s.classList.add('page-info');
+    s.innerHTML = `${img} total: ${data.length}`;
+    s.style.position = 'absolute';
+    s.style.font = 60 * scale + 'px monospace';
+    s.style.top = 150 * scale + 'px';
+    s.style.left = 200 * scale + 'px';
+    s.style.zIndex = 20;
+    s.style.background = data.length !== 75 && 'pink';
+    document.body.appendChild(s);
+  };
+}
+
+function main(data, ctx, scale) {
   data.forEach(({ text }) =>
     text.split('').forEach(c => {
       if (c.charCodeAt(0) > 127)
@@ -47,17 +79,6 @@ function main(data, scale) {
   }));
 
   function draw() {
-    // draw page number info
-    let s = document.createElement('span');
-    s.classList.add('text-overlay');
-    s.innerHTML = `Page: ${pageName}; total: ${data.length}`;
-    s.style.position = 'absolute';
-    s.style.font = 70 * scale + 'px Arial';
-    s.style.top = 150 * scale + 'px';
-    s.style.left = 200 * scale + 'px';
-    s.style.zIndex = 20;
-    document.body.appendChild(s);
-
     let i = 0;
     for (let d of data) {
       // draw yellow rectangle to cover word
