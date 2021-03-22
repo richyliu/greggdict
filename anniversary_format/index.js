@@ -139,9 +139,9 @@ function isUseful({ text, vertices }) {
   let rectWidth = vertWidth(vertices);
   let diff = Math.floor(Math.abs(rectWidth - textPixelWidth) * 100) / 100;
   let diffPercent = diff / textPixelWidth;
-  console.log(text, diffPercent);
+  // console.log(text, diffPercent);
 
-  return true;
+  // return true;
   if (text.length > 4) {
     // higher threshold for longer words
     return diffPercent < 0.5;

@@ -1,31 +1,68 @@
-const IMG = 'images/p024.png';
-
-const parseData = require('./index.js');
-
+const INITIAL_IMG = 182;
 const DISPLAY_WIDTH = 800;
 
-let pageName = IMG.slice(-7, -4);
-let dataUrl = `output/p${pageName}.json`;
+const parseData = require('./index.js');
 
 let canvas = document.getElementById('canvas');
 let ctx = canvas.getContext('2d');
 
-let imageEl = document.querySelector('#img');
-imageEl.src = IMG;
-imageEl.onload = e => {
-  let scale = DISPLAY_WIDTH / imageEl.naturalWidth;
-  canvas.width = DISPLAY_WIDTH;
-  canvas.height = imageEl.naturalHeight * scale;
-  imageEl.style.width = DISPLAY_WIDTH + 'px';
+// switch between pages with arrow keys
+let curImg = INITIAL_IMG;
+function loadPage() {
+  loadImage(`images/p${('' + curImg).padStart(3, '0')}.png`);
+}
+document.body.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') {
+    curImg++;
+    loadPage();
+  } else if (e.key === 'ArrowLeft') {
+    if (curImg > 0) curImg--;
+    loadPage();
+  }
+});
+loadPage();
 
-  fetch(dataUrl)
-    .then(r => r.json())
-    .then(d => parseData(d))
-    .then(d => main(d, scale))
-    .catch(e => {
-      console.error('Fetch or parse image error', e);
-    });
-};
+function loadImage(img) {
+  let pageName = img.slice(-7, -4);
+  let dataUrl = `output/p${pageName}.json`;
+
+  // clear text and canvas
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  document.querySelectorAll('.text-overlay').forEach(el => el.remove());
+  document.querySelectorAll('.page-info').forEach(el => el.remove());
+
+  // load the image
+  let imageEl = document.querySelector('#img');
+  imageEl.src = img;
+  imageEl.onload = e => {
+    // resize the canvas accordingly
+    let scale = DISPLAY_WIDTH / imageEl.naturalWidth;
+    canvas.width = DISPLAY_WIDTH;
+    canvas.height = imageEl.naturalHeight * scale;
+    imageEl.style.width = DISPLAY_WIDTH + 'px';
+
+    fetch(dataUrl)
+      .then(r => r.json())
+      .then(d => parseData(d))
+      .then(d => {
+        main(d, scale);
+
+        // draw page number info
+        let s = document.createElement('span');
+        s.classList.add('page-info');
+        s.innerHTML = `Page: ${pageName}; total: ${d.length}`;
+        s.style.position = 'absolute';
+        s.style.font = 70 * scale + 'px Arial';
+        s.style.top = 150 * scale + 'px';
+        s.style.left = 200 * scale + 'px';
+        s.style.zIndex = 20;
+        document.body.appendChild(s);
+      })
+      .catch(e => {
+        console.error('Fetch or parse image error', e);
+      });
+  };
+}
 
 function main(data, scale) {
   data.forEach(({ text }) =>
@@ -47,17 +84,6 @@ function main(data, scale) {
   }));
 
   function draw() {
-    // draw page number info
-    let s = document.createElement('span');
-    s.classList.add('text-overlay');
-    s.innerHTML = `Page: ${pageName}; total: ${data.length}`;
-    s.style.position = 'absolute';
-    s.style.font = 70 * scale + 'px Arial';
-    s.style.top = 150 * scale + 'px';
-    s.style.left = 200 * scale + 'px';
-    s.style.zIndex = 20;
-    document.body.appendChild(s);
-
     let i = 0;
     for (let d of data) {
       // draw yellow rectangle to cover word
