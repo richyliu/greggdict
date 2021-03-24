@@ -9,10 +9,11 @@ const IMG_WIDTH = 900;
 const Wrapper = () => {
   const [allData, setAllData] = useState(null);
   useEffect(() => {
+    let canceled = false;
     fetch(PARSED_JSON)
       .then(r => r.json())
-      .then(d => setAllData(d));
-    return () => {};
+      .then(d => !canceled && setAllData(d));
+    return () => (canceled = true);
   }, [setAllData]);
 
   return allData ? <App allData={allData} /> : <h1>Loading JSON...</h1>;
@@ -25,15 +26,21 @@ const App = ({ allData }) => {
   let curImg = `images/p${paddedPage}.png`;
 
   function onUpdate(newData) {
-    console.log(JSON.stringify(newData));
+    console.log('[INFO] Data changed');
   }
 
   return (
     <div>
-      <h1>Manual editor</h1>
-      {allData && (
+      <h1 style={{ margin: 10 }}>Manual editor</h1>
+      <p>Modes shortcuts (use ctrl key, even on MacOS):</p>
+      <ul>
+        <li>editing (default, change and move words): ctrl-a</li>
+        <li>none (hide words): ctrl-q</li>
+        <li>remove (delete words): ctrl-d</li>
+      </ul>
+      <div>
         <Page initialData={allData[curPage]} img={curImg} onUpdate={onUpdate} />
-      )}
+      </div>
     </div>
   );
 };
@@ -60,42 +67,95 @@ const Page = ({ initialData, img, onUpdate }) => {
         return d.map((c, i) =>
           i === val.index ? { ...c, text: val.text } : c
         );
+      case 'remove':
+        return d.filter((_, i) => i !== val.index);
       default:
         return d;
     }
   }, initialData);
-  useEffect(() => {
-    onUpdate(data);
-    return () => {};
-  }, [data]);
+  useEffect(() => onUpdate(data), [data]);
 
-  function imageLoaded() {
-    setScale(IMG_WIDTH / imageRef.current.naturalWidth);
+  const [editorState, setEditorState] = useState('edit');
+
+  function curEditor() {
+    switch (editorState) {
+      case 'edit':
+        return data.map((d, i) => (
+          <EditText
+            key={i}
+            scale={scale}
+            onDrag={a =>
+              dispatch({ type: 'updatePos', val: { index: i, x: a.x, y: a.y } })
+            }
+            onChangeText={a =>
+              dispatch({ type: 'updateText', val: { index: i, text: a.text } })
+            }
+            {...d}
+          />
+        ));
+      case 'remove':
+        return data.map((d, i) => (
+          <RemoveText
+            key={i}
+            scale={scale}
+            onRemove={a => dispatch({ type: 'remove', val: { index: i } })}
+            {...d}
+          />
+        ));
+      case 'hidden':
+        return;
+      default:
+        return <h2>Error: unknowk editor state: {editorState}</h2>;
+    }
   }
 
+  useEffect(() => {
+    function onKeyDown(e) {
+      if (!e.ctrlKey) return;
+      switch (e.key) {
+        case 'q':
+          setEditorState('hidden');
+          e.preventDefault();
+          return;
+        case 'd':
+          setEditorState('remove');
+          e.preventDefault();
+          return;
+        case 'a':
+          setEditorState('edit');
+          e.preventDefault();
+          return;
+      }
+    }
+    document.body.addEventListener('keypress', onKeyDown);
+    return () => document.body.removeEventListener('keypress', onKeyDown);
+  });
+
   return (
-    <div style={{ position: 'relative' }}>
-      <img src={img} onLoad={imageLoaded} width={IMG_WIDTH} ref={imageRef} />
-      {data.map((d, i) => (
-        <Text
-          key={i}
-          scale={scale}
-          onDrag={a =>
-            dispatch({ type: 'updatePos', val: { index: i, x: a.x, y: a.y } })
-          }
-          onChangeText={a =>
-            dispatch({ type: 'updateText', val: { index: i, text: a.text } })
-          }
-          {...d}
+    <div>
+      <p>Current editor mode: {editorState}</p>
+      <div
+        style={{
+          position: 'relative',
+          border: '1px solid black',
+          display: 'inline-block',
+        }}
+      >
+        <img
+          src={img}
+          ref={imageRef}
+          onLoad={() => setScale(IMG_WIDTH / imageRef.current.naturalWidth)}
+          style={{ width: IMG_WIDTH }}
         />
-      ))}
+        {curEditor()}
+      </div>
     </div>
   );
 };
 
 const fontSize = 80;
 
-const Text = ({ text, x, y, scale, onDrag, onChangeText }) => {
+const EditText = ({ text, x, y, scale, onDrag, onChangeText }) => {
   const [hasChanged, setHasChanged] = useState(false);
   const editableTextRef = useRef(null);
 
@@ -140,6 +200,25 @@ const Text = ({ text, x, y, scale, onDrag, onChangeText }) => {
         suppressContentEditableWarning
       ></span>
     </DraggableCore>
+  );
+};
+
+const RemoveText = ({ text, x, y, scale, onRemove }) => {
+  let hasNonAscii = text.split('').some(c => c.charCodeAt(0) > 127);
+  let styles = {
+    top: y * scale - (fontSize / 2) * scale,
+    left: x * scale,
+    fontSize: fontSize * scale,
+    background: hasNonAscii ? 'aqua' : 'salmon',
+    color: 'black',
+    position: 'absolute',
+    cursor: 'pointer',
+  };
+
+  return (
+    <span style={styles} onClick={onRemove}>
+      {text}
+    </span>
   );
 };
 
