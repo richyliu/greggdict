@@ -1,155 +1,146 @@
-const DISPLAY_WIDTH = 800;
+import React, { useState, useEffect, useRef, useReducer } from 'react';
+import ReactDom from 'react-dom';
 
-const parseData = require('./index.js');
+import { DraggableCore } from 'react-draggable';
 
-fetch('parsed/parsed01.json')
-  .then(r => r.json())
-  .then(withAllData);
+const PARSED_JSON = './parsed/parsed01.json';
+const IMG_WIDTH = 900;
 
-function withAllData(allData) {
-  let pages = Object.entries(allData);
-  let curImg = 22;
+const Wrapper = () => {
+  const [allData, setAllData] = useState(null);
+  useEffect(() => {
+    fetch(PARSED_JSON)
+      .then(r => r.json())
+      .then(d => setAllData(d));
+    return () => {};
+  }, [setAllData]);
 
-  function loadPage() {
-    let [jsonName, data] = pages[curImg];
-    let img = `images/p${jsonName.slice(-8, -5)}.png`;
-    loadImage(data, img);
+  return allData ? <App allData={allData} /> : <h1>Loading JSON...</h1>;
+};
+
+const App = ({ allData }) => {
+  const [page, setPage] = useState(2);
+  let paddedPage = ('' + page).padStart(3, '0');
+  let curPage = `p${paddedPage}.json`;
+  let curImg = `images/p${paddedPage}.png`;
+
+  function onUpdate(newData) {
+    console.log(JSON.stringify(newData));
   }
 
-  document.body.addEventListener('keydown', e => {
-    if (e.key === 'ArrowRight') {
-      curImg++;
-      loadPage();
-    } else if (e.key === 'ArrowLeft') {
-      if (curImg > 0) curImg--;
-      loadPage();
-    }
-  });
-  loadPage();
-}
-
-function loadImage(data, img) {
-  let canvas = document.getElementById('canvas');
-  let ctx = canvas.getContext('2d');
-  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-  document.querySelectorAll('.text-overlay').forEach(el => el.remove());
-  document.querySelectorAll('.page-info').forEach(el => el.remove());
-
-  let imageEl = document.querySelector('#img');
-  imageEl.src = img;
-  imageEl.onload = e => {
-    let scale = DISPLAY_WIDTH / imageEl.naturalWidth;
-    canvas.width = DISPLAY_WIDTH;
-    canvas.height = imageEl.naturalHeight * scale;
-    imageEl.style.width = DISPLAY_WIDTH + 'px';
-
-    main(data, ctx, scale);
-
-    // draw page number info
-    let s = document.createElement('span');
-    s.classList.add('page-info');
-    s.innerHTML = `${img} total: ${data.length}`;
-    s.style.position = 'absolute';
-    s.style.font = 60 * scale + 'px monospace';
-    s.style.top = 150 * scale + 'px';
-    s.style.left = 200 * scale + 'px';
-    s.style.zIndex = 20;
-    s.style.background = data.length !== 75 && 'pink';
-    document.body.appendChild(s);
-  };
-}
-
-function main(data, ctx, scale) {
-  data.forEach(({ text }) =>
-    text.split('').forEach(c => {
-      if (c.charCodeAt(0) > 127)
-        console.log(
-          `[viewer.js]: non ascii: "${c}" in "${text}", code: 0x${c
-            .charCodeAt(0)
-            .toString(16)
-            .padStart(4, '0')}`
-        );
-    })
+  return (
+    <div>
+      <h1>Manual editor</h1>
+      {allData && (
+        <Page initialData={allData[curPage]} img={curImg} onUpdate={onUpdate} />
+      )}
+    </div>
   );
+};
 
-  // multiply all vertices by scale
-  data = data.map(d => ({
-    ...d,
-    vertices: d.vertices.map(v => ({ x: v.x * scale, y: v.y * scale })),
-  }));
+/**
+ * Supported functionalities:
+ *  Drag text location
+ *  Change text content
+ *
+ *  Delete text
+ *  Add text
+ */
 
-  function draw() {
-    let i = 0;
-    for (let d of data) {
-      // draw yellow rectangle to cover word
-      ctx.fillStyle = 'hsla(60, 90%, 80%, 0.9)';
-      if (
-        // make the rectangle blue if there are nonascii characters
-        d.text.split('').some(c => c.charCodeAt(0) > 127)
-      ) {
-        ctx.fillStyle = 'hsla(180, 90%, 70%, 0.9)';
-      }
-      linePoly(ctx, d.vertices);
-      ctx.fill();
-
-      // put pink dots at the corners of the bounding box
-      for (let v of d.vertices) {
-        ctx.beginPath();
-        ctx.arc(v.x, v.y, 2, 0, 2 * Math.PI);
-        ctx.fillStyle = 'green';
-        ctx.fill();
-      }
-
-      // draw a blue number for each text
-      ctx.fillStyle = 'blue';
-      ctx.font = 40 * scale + 'px Georgia';
-      ctx.fillText(i, d.vertices[0].x, d.vertices[0].y - 10 * scale);
-
-      // make a dark red span overlay for the scanned text itself
-      let s = document.createElement('span');
-      s.classList.add('text-overlay');
-      s.innerHTML = ' ' + d.text;
-      s.style.position = 'absolute';
-      s.style.font = 66 * scale + 'px Georgia';
-      s.style.color = 'maroon';
-      // center the text in the scanned bounding box
-      s.style.top =
-        Math.floor((d.vertices[0].y + d.vertices[3].y) / 2 - (66 * scale) / 2) +
-        'px';
-      s.style.left = d.vertices[0].x + 'px';
-      s.style.zIndex = 20;
-      document.body.appendChild(s);
-
-      i++;
+const Page = ({ initialData, img, onUpdate }) => {
+  const imageRef = useRef(null);
+  const [scale, setScale] = useState(1);
+  const [data, dispatch] = useReducer((d, { type, val }) => {
+    switch (type) {
+      case 'updatePos':
+        return d.map((c, i) =>
+          i === val.index ? { ...c, x: val.x, y: val.y } : c
+        );
+      case 'updateText':
+        return d.map((c, i) =>
+          i === val.index ? { ...c, text: val.text } : c
+        );
+      default:
+        return d;
     }
+  }, initialData);
+  useEffect(() => {
+    onUpdate(data);
+    return () => {};
+  }, [data]);
+
+  function imageLoaded() {
+    setScale(IMG_WIDTH / imageRef.current.naturalWidth);
   }
 
-  draw();
+  return (
+    <div style={{ position: 'relative' }}>
+      <img src={img} onLoad={imageLoaded} width={IMG_WIDTH} ref={imageRef} />
+      {data.map((d, i) => (
+        <Text
+          key={i}
+          scale={scale}
+          onDrag={a =>
+            dispatch({ type: 'updatePos', val: { index: i, x: a.x, y: a.y } })
+          }
+          onChangeText={a =>
+            dispatch({ type: 'updateText', val: { index: i, text: a.text } })
+          }
+          {...d}
+        />
+      ))}
+    </div>
+  );
+};
 
-  // remove overlay when pressing q key
-  document.body.onkeydown = e => {
-    if (e.key !== 'q') return;
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    document.querySelectorAll('.text-overlay').forEach(el => el.remove());
+const fontSize = 80;
+
+const Text = ({ text, x, y, scale, onDrag, onChangeText }) => {
+  const [hasChanged, setHasChanged] = useState(false);
+  const editableTextRef = useRef(null);
+
+  let hasNonAscii = text.split('').some(c => c.charCodeAt(0) > 127);
+  let styles = {
+    top: y * scale - (fontSize / 2) * scale,
+    left: x * scale,
+    fontSize: fontSize * scale,
+    background: hasNonAscii ? 'aqua' : 'khaki',
+    color: hasChanged ? 'red' : 'black',
+    position: 'absolute',
+    cursor: 'default',
   };
-  // redraw it on key up
-  document.body.onkeyup = e => {
-    if (e.key !== 'q') return;
-    draw();
-  };
-}
-
-// Draws a polygon to ctx with vertices in the list
-function linePoly(ctx, vertices) {
-  if (vertices.length < 3) {
-    throw new Error('At least 3 vertices needed for linePoly');
+  function dragged(_e, d) {
+    if (d.x === 0 && d.y === 0) return;
+    let newX = Math.floor(x + d.deltaX / scale);
+    let newY = Math.floor(y + d.deltaY / scale);
+    onDrag({ x: newX, y: newY });
+    setHasChanged(true);
   }
 
-  let start = vertices[0];
-  ctx.beginPath();
-  ctx.moveTo(start.x, start.y);
-  for (let v of vertices) {
-    ctx.lineTo(v.x, v.y);
+  function changeText() {
+    onChangeText({ text: editableTextRef.current.innerHTML });
+    setHasChanged(true);
   }
-  ctx.closePath();
-}
+
+  // set initial text in span
+  useEffect(() => {
+    let canceled = false;
+    if (editableTextRef.current && !canceled)
+      editableTextRef.current.innerHTML = text;
+    return () => (canceled = true);
+  }, [editableTextRef]);
+
+  return (
+    <DraggableCore onDrag={dragged}>
+      <span
+        style={styles}
+        ref={editableTextRef}
+        onInput={changeText}
+        contentEditable
+        suppressContentEditableWarning
+      ></span>
+    </DraggableCore>
+  );
+};
+
+ReactDom.render(<Wrapper />, document.getElementById('app'));

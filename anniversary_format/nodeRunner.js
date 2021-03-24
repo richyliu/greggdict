@@ -12,10 +12,18 @@ async function main() {
     let rawJson = await fs.readFile(`${JSON_DIR}/${jsonFile}`);
     let result = parseData(JSON.parse(rawJson));
     console.log(jsonFile, result.length);
+    result = result.map(toSingleCoordinate);
     all[jsonFile] = result;
   }
 
   await fs.writeFile('parsed.json', JSON.stringify(all));
+}
+
+// average the left bounding side from the left 2 vertices and floor the result
+function toSingleCoordinate({ text, vertices }) {
+  let x = Math.floor((vertices[0].x + vertices[3].x) / 2);
+  let y = Math.floor((vertices[0].y + vertices[3].y) / 2);
+  return { text, x, y };
 }
 
 main()

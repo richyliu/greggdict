@@ -6,9 +6,6 @@ function parseData(rawData) {
   let converted = convertConfusables(data);
   let cleaned = removeHeader(converted);
   let filtered = filterJunk(cleaned);
-  // filtered.forEach(({ text }) => {
-  //   if ([...text].some(c => c.codePointAt(0) > 127)) console.log(`${text}`);
-  // });
   return filtered;
 }
 

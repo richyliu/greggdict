@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang=en>
+  <head>
+    <meta charset="utf-8"/>
+    <title>OCR tool</title>
+    <style>
+      #canvas {
+        border: 1px solid black;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 10;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+
+      #img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+    <img id="img" src=""/>
+
+    <script src="viewer.js" charset="utf-8"></script>
+  </body>
+</html>
+
