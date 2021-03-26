@@ -14,7 +14,6 @@
     "parcel": "^2.0.0-beta.1"
   },
   "dependencies": {
-    "@sentry/browser": "^5.30.0",
     "autoprefixer": "^10.2.1",
     "postcss": "^8.2.4",
     "react": "^17.0.1",
