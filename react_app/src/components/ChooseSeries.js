@@ -57,7 +57,10 @@ const ChooseSeries = ({ series, curSeries, onChoose }) => {
             {series.map(s => (
               <button
                 href="#"
-                className="block px-3 py-2 w-full text-left leading-6 text-gray-900 hover:bg-gray-100"
+                className={
+                  'block px-3 py-2 w-full text-left leading-6 hover:bg-gray-100 ' +
+                  (curSeries === s ? 'text-blue-900' : 'text-gray-900')
+                }
                 onClick={() => {
                   onChoose(s);
                   setShowDropdown(false);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
 
 import SearchInput from './SearchInput';
 import SearchSuggestions from './SearchSuggestions';
@@ -13,22 +13,32 @@ const SearchContainer = ({
   // list of words with the corresponding page number
   const [words, setWords] = useState([]);
 
+  // cache reference dictionary to prevent unnecessary requests
+  const cached = useRef({});
+
   // get the reference dictionary for the series
   useEffect(() => {
+    if (cached.current[curSeries]) {
+      setWords(cached.current[curSeries]);
+    }
+
     const xhr = new XMLHttpRequest();
 
     // Setup our listener to process compeleted requests
-    xhr.onreadystatechange = function() {
+    xhr.onreadystatechange = function () {
       if (xhr.readyState !== 4) return;
 
       if (xhr.status === 200) {
         const reference = JSON.parse(xhr.responseText);
-        setWords(
-          (reference || []).flatMap(p =>
-            p.words.map(w => ({ ...w, page: p.page }))
-          )
+        let response = (reference || []).flatMap(p =>
+          p.words.map(w => ({ ...w, page: p.page }))
         );
+        cached.current[curSeries] = response;
+        setWords(response);
       } else {
+        // status of 0 if request was aborted
+        if (xhr.status === 0) return;
+
         alert(
           `Could not get the dictionary for ${curSeries}. This error has been automatically reported`
         );
@@ -49,7 +59,9 @@ const SearchContainer = ({
   const sugs =
     str.length === 0
       ? null
-      : words.filter(w => w.t.toLowerCase().startsWith(str.trim().toLowerCase()));
+      : words.filter(w =>
+          w.t.toLowerCase().startsWith(str.trim().toLowerCase())
+        );
 
   // the suggestion item that is currently selected (on desktop)
   const [sel, setSel] = useState(0);
