@@ -5,7 +5,7 @@
   "author": "Richard Liu (richyliu)",
   "license": "MIT",
   "scripts": {
-    "start": "parcel -p 8000 src/index.html",
+    "start": "parcel serve src/index.html --port=8000 --open",
     "build": "rm -rf dist/ && parcel build --no-source-maps src/index.html",
     "deploy-prerelease": "surge dist/ gregg-prerelease.surge.sh",
     "clean": "rm -rf dist/ && rm -rf .parcel-cache/"

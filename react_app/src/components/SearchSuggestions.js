@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-const SEARCH_LIMIT = 50;
+const DEFAULT_SEARCH_LIMIT = 20;
+const SEARCH_LIMIT_INCREMENT = 50;
 
 const SuggestionItem = ({ text, onClick, selected }) => (
   <div
@@ -11,40 +12,48 @@ const SuggestionItem = ({ text, onClick, selected }) => (
   </div>
 );
 
-const SearchSuggestions = ({ suggestions, onClick, selected }) => (
-  <div
-    className={
-      'bg-white absolute w-full z-20 shadow-lg rounded transition ease-in-out duration-100 ' +
-      (suggestions !== null
-        ? 'transform opacity-100 scale-100'
-        : 'transform opacity-0 scale-95 pointer-events-none')
-    }
-  >
-    {suggestions &&
-      (suggestions.length === 0 ? (
-        <div className="py-1">
-          <SuggestionItem
-            text={<i>No results found</i>}
-            onClick={() => {}}
-            selected={false}
-          />
-        </div>
-      ) : (
-        <div className="overflow-y-auto" style={{ maxHeight: '10rem' }}>
-          {suggestions.slice(0, SEARCH_LIMIT).map((sug, i) => (
+const SearchSuggestions = ({ suggestions, onClick, selected }) => {
+  const [searchLimit, setSearchLimit] = useState(DEFAULT_SEARCH_LIMIT);
+  return (
+    <div
+      className={
+        'bg-white absolute w-full z-20 shadow-lg rounded transition ease-in-out duration-100 ' +
+        (suggestions !== null
+          ? 'transform opacity-100 scale-100'
+          : 'transform opacity-0 scale-95 pointer-events-none')
+      }
+    >
+      {suggestions &&
+        (suggestions.length === 0 ? (
+          <div className="py-1">
             <SuggestionItem
-              selected={i === selected}
-              text={sug.t}
-              onClick={() => onClick(sug)}
-              key={i}
+              text={<i>No results found</i>}
+              onClick={() => {}}
+              selected={false}
             />
-          ))}
-          {suggestions.length > SEARCH_LIMIT && (
-            <SuggestionItem text="..." onClick={() => {}} />
-          )}
-        </div>
-      ))}
-  </div>
-);
+          </div>
+        ) : (
+          <div className="overflow-y-auto" style={{ maxHeight: '10rem' }}>
+            {suggestions.slice(0, searchLimit).map((sug, i) => (
+              <SuggestionItem
+                selected={i === selected}
+                text={sug.t}
+                onClick={() => onClick(sug)}
+                key={i}
+              />
+            ))}
+            {suggestions.length > searchLimit && (
+              <SuggestionItem
+                text={`(show ${suggestions.length - searchLimit} more)`}
+                onClick={() =>
+                  setSearchLimit(searchLimit + SEARCH_LIMIT_INCREMENT)
+                }
+              />
+            )}
+          </div>
+        ))}
+    </div>
+  );
+};
 
 export default SearchSuggestions;

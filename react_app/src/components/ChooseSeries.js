@@ -86,12 +86,6 @@ const ChooseSeries = ({ series, curSeries, onChoose }) => {
                 {s}
               </button>
             ))}
-            <div
-              href="#"
-              className="block px-3 py-2 w-full text-left leading-6 text-gray-600  text-sm"
-            >
-              Don't see your series? See FAQ
-            </div>
           </div>
         </div>
       </div>

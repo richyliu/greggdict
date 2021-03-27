@@ -6,7 +6,7 @@ import SearchInput from './SearchInput';
 import SearchSuggestions from './SearchSuggestions';
 import { dictRoot } from '../settings';
 
-const MAX_SEARCH_LIMIT = 50;
+const SEARCH_LIMIT = 50;
 
 const SearchContainer = ({
   onSelectWord,
@@ -64,6 +64,7 @@ const SearchContainer = ({
       new Fuse(words, {
         keys: ['t'],
         threshold: 0.2,
+        useExtendedSearch: true,
       }),
     [words]
   );
@@ -86,7 +87,6 @@ const SearchContainer = ({
       setSugs(
         fuse
           .search(str)
-          .slice(0, MAX_SEARCH_LIMIT)
           .map(a => a.item)
       );
     }, 200);

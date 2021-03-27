@@ -59,7 +59,7 @@ const ImageDisplay = ({ word, isExpanded, image }) => {
             {loading && <LoadingSpinner />}
           </>
         ) : (
-          <div className="p-1">Type a word above to get started</div>
+          <div className="p-2">Type a word above to get started</div>
         )}
       </div>
     </div>

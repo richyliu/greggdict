@@ -25,12 +25,24 @@ const FAQ = () => (
       FAQ
     </h2>
     <QuestionAndAnswer
-      question="Why don't I see my series of Gregg Shorthand?"
+      question="How do I search for words that end in a certain suffix?"
       answer={
-        <span>
-          Currently only simplified is supported. I may add more series in the
-          future.
-        </span>
+        <div>
+          <p>
+            UNIX style search syntax is supported. White space acts as an AND
+            operator, while a single pipe (|) character acts as an OR operator.
+          </p>
+          <p className="mt-2">
+            Use "<code>ify$</code>" to search for words that end in "ify", like
+            "certify" and "classify". For full search syntax, see{' '}
+            <a
+              href="https://github.com/krisk/Fuse/blob/master/docs/examples.md#extended-search"
+              className="font-bold border-b border-transparent hover:border-current"
+            >
+              this reference
+            </a>
+          </p>
+        </div>
       }
     />
     <QuestionAndAnswer
