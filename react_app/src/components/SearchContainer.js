@@ -1,8 +1,12 @@
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 
+import Fuse from 'fuse.js';
+
 import SearchInput from './SearchInput';
 import SearchSuggestions from './SearchSuggestions';
 import { dictRoot } from '../settings';
+
+const MAX_SEARCH_LIMIT = 50;
 
 const SearchContainer = ({
   onSelectWord,
@@ -55,13 +59,40 @@ const SearchContainer = ({
 
   const [str, setStr] = useState('');
 
-  // find suggestions by matching start of search string with the words
-  const sugs =
-    str.length === 0
-      ? null
-      : words.filter(w =>
-          w.t.toLowerCase().startsWith(str.trim().toLowerCase())
-        );
+  const fuse = useMemo(
+    () =>
+      new Fuse(words, {
+        keys: ['t'],
+        threshold: 0.2,
+      }),
+    [words]
+  );
+
+  const [sugs, setSugs] = useState(null);
+
+  useEffect(() => {
+    let canceled = false;
+
+    // no search string is different from no results
+    if (str.length === 0) {
+      setSugs(null);
+      return;
+    }
+
+    // set a delay to prevent searching while user is typing quickly
+    setTimeout(() => {
+      if (canceled) return;
+
+      setSugs(
+        fuse
+          .search(str)
+          .slice(0, MAX_SEARCH_LIMIT)
+          .map(a => a.item)
+      );
+    }, 200);
+
+    return () => (canceled = true);
+  }, [str]);
 
   // the suggestion item that is currently selected (on desktop)
   const [sel, setSel] = useState(0);
