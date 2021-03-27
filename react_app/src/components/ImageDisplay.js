@@ -26,10 +26,8 @@ const ImageDisplay = ({ word, isExpanded, image }) => {
   const scale = useRef(1);
 
   function onImgLoad() {
-    console.log(imgRef.current);
     if (!imgRef.current) return;
 
-    console.log(scale.current);
     scale.current = IMG_WIDTH / imgRef.current.naturalWidth;
     imgRef.current.style.width = `${IMG_WIDTH}px`;
 
