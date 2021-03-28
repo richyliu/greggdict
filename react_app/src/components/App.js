@@ -7,6 +7,7 @@ import Divider from './Divider';
 import FAQ from './FAQ';
 import Footer from './Footer';
 import GithubCorner from './GithubCorner';
+import NewReleaseBanner from './NewReleaseBanner';
 import { series } from '../settings';
 
 const DEFAULT_SERIES_KEY = 'gregg_dict01_default_series';
@@ -48,6 +49,7 @@ const App = () => {
       <Divider />
       <FAQ />
       <Footer />
+      <NewReleaseBanner />
     </div>
   );
 };

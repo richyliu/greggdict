@@ -104,6 +104,12 @@ const SearchContainer = ({
     onSelectWord(word);
   }
 
+  function changeSeries(s) {
+    setSeries(s);
+    // reset word when changing series to get different suggestions
+    setStr('')
+  }
+
   return (
     <div className="my-4 text-lg relative">
       <SearchInput
@@ -114,7 +120,7 @@ const SearchContainer = ({
         onArrowUp={() => sel > 0 && setSel(sel - 1)}
         series={seriesList}
         curSeries={curSeries}
-        onChooseSeries={setSeries}
+        onChooseSeries={changeSeries}
       />
       <SearchSuggestions
         suggestions={sugs}
