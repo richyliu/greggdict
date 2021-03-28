@@ -21,7 +21,3 @@ form](https://docs.google.com/forms/d/e/1FAIpQLSe7Dhv-7SiZavvGoYE0Fy-n9n7OCmUQjh
 
 The process of identifying the words from the raw scanned images of the
 dictionary was quite tedious. It is described in detail in `format/README.md`
-
-## TODO
-
-Make it easier to search for words with accents
