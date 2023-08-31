@@ -43,18 +43,6 @@ const FAQ = () => (
       }
     />
     <QuestionAndAnswer
-      question="What do I do if something doesn't work or there is an incorrect word?"
-      answer={
-        <span>
-          You can report it using the feedback{' '}
-          <Link href="https://docs.google.com/forms/d/e/1FAIpQLSeFnUw8-oYluUpsaORb1krYowiq_JGeTuu_ibFhiIkKl5HJig/viewform?usp=sf_link">
-            Google Form
-          </Link>
-          .
-        </span>
-      }
-    />
-    <QuestionAndAnswer
       question="Why are some common words missing?"
       answer={
         <span>
@@ -80,18 +68,6 @@ const FAQ = () => (
         </span>
       }
     />
-    <QuestionAndAnswer
-      question="I have another question!"
-      answer={
-        <span>
-          Ask your questions using the{' '}
-          <Link href="https://docs.google.com/forms/d/e/1FAIpQLSeFnUw8-oYluUpsaORb1krYowiq_JGeTuu_ibFhiIkKl5HJig/viewform?usp=sf_link">
-            feedback form
-          </Link>
-        </span>
-      }
-    />
-  </div>
 );
 
 export default FAQ;
