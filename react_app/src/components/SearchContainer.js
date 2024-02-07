@@ -86,7 +86,7 @@ const SearchContainer = ({
 
       setSugs(
         fuse
-          .search(str)
+          .search(str.trim()) // strip trailing spaces
           .map(a => a.item)
       );
     }, 200);

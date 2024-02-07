@@ -68,6 +68,7 @@ const FAQ = () => (
         </span>
       }
     />
+  </div>
 );
 
 export default FAQ;
