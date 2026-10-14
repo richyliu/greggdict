@@ -5,11 +5,25 @@ style of shorthand which uses lines and loops to represent words. This app
 (built in React) is helpful in learning shorthand by allowing you to search up
 words you don't know.
 
-Try it online at [https://greggdict.rliu.dev](https://greggdict.rliu.dev)
+Try it online at [https://greggdict.com](https://greggdict.com)
 
-The prerelease for each version is available at
-[https://gregg-prerelease.surge.sh](https://gregg-prerelease.surge.sh). Note
-that it may be buggy.
+## Running locally
+
+The React app is in `react_app/`. It uses Node.js 26, npm, Vite, and Cloudflare's
+Workers Static Assets tooling.
+
+```sh
+cd react_app
+mise install
+mise x -- npm ci
+mise x -- npm run dev
+```
+
+Open `http://127.0.0.1:8000`. The production build can be previewed locally with
+`mise x -- npm run build` followed by `mise x -- npm run preview`.
+
+Dictionary data and page scans are copied from the repository's `assets/`
+directory into the static build. The browser does not fetch them from a CDN.
 
 ## Requesting other series
 

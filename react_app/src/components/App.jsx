@@ -7,6 +7,7 @@ import Divider from './Divider';
 import FAQ from './FAQ';
 import Footer from './Footer';
 import GithubCorner from './GithubCorner';
+import DomainNotice from './DomainNotice';
 import { series } from '../settings';
 
 const DEFAULT_SERIES_KEY = 'gregg_dict01_default_series';
@@ -37,6 +38,7 @@ const App = () => {
   return (
     <div className="font-sans max-w-lg mx-auto pt-1 px-2 sm:px-3">
       <GithubCorner />
+      <DomainNotice />
       <Header />
       <SearchContainer
         onSelectWord={setWord}

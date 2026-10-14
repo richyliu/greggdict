@@ -5,20 +5,29 @@
   "author": "Richard Liu (richyliu)",
   "license": "MIT",
   "scripts": {
-    "start": "parcel serve src/index.html --port=8000 --open",
-    "build": "rm -rf dist/ && parcel build --no-source-maps src/index.html",
-    "deploy-prerelease": "surge dist/ gregg-prerelease.surge.sh",
-    "clean": "rm -rf dist/ && rm -rf .parcel-cache/"
+    "dev": "vite --host 127.0.0.1 --port 8000",
+    "start": "npm run dev",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 8000",
+    "deploy": "wrangler deploy",
+    "clean": "rm -rf dist/ .wrangler/ .vite/"
   },
   "devDependencies": {
-    "parcel": "2.3.2"
+    "@cloudflare/vite-plugin": "1.64.0",
+    "@tailwindcss/vite": "4.3.3",
+    "@vitejs/plugin-react": "6.1.2",
+    "tailwindcss": "4.3.3",
+    "vite": "8.3.4",
+    "wrangler": "4.151.0"
   },
   "dependencies": {
-    "autoprefixer": "^10.2.1",
-    "fuse.js": "^6.4.6",
-    "postcss": "^8.2.10",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "tailwindcss": "^2.0.2"
+    "@fontsource/roboto": "5.3.0",
+    "fuse.js": "7.5.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true,
+    "workerd@1.20261012.1": true
   }
 }
