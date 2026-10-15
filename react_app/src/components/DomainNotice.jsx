@@ -10,8 +10,8 @@ const DomainNotice = () => {
   if (!onLegacyDomain && !arrivedFromLegacyDomain) return null;
 
   return (
-    <aside className="mb-4 rounded bg-blue-50 px-3 py-2 text-center text-sm text-blue-900">
-      Gregg Dictionary has moved to{' '}
+    <aside className="mt-4 rounded bg-blue-50 px-3 py-2 text-center text-md text-blue-900">
+      As of October 2026, Gregg Shorthand Dictionary has moved to{' '}
       <a className="font-bold underline" href="https://greggdict.com">
         greggdict.com
       </a>
