@@ -1,5 +1,5 @@
 // current version
-const version = 'v0.1.0';
+const version = 'v0.1.1';
 
 // Public assets are copied from the repository's assets/ directory at build time.
 const dictRoot = '';

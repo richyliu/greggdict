@@ -7,7 +7,7 @@ const Footer = () => (
     <a href="https://github.com/richyliu/greggdict/releases">
       {version}
     </a>{' '}
-    | &copy; Richard Liu 2024
+    | &copy; Richard Liu {new Date().getFullYear()}
   </div>
 );
 

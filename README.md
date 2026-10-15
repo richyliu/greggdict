@@ -19,8 +19,42 @@ mise x -- npm ci
 mise x -- npm run dev
 ```
 
-Open `http://127.0.0.1:8000`. The production build can be previewed locally with
-`mise x -- npm run build` followed by `mise x -- npm run preview`.
+Open `http://127.0.0.1:8000`.
+
+## Building and previewing
+
+From the repository root, install the dependencies and build the app with:
+
+```sh
+cd react_app
+mise install
+mise x -- npm ci
+mise x -- npm run build
+```
+
+`mise x --` runs the command after `--` with the tools selected by mise. This
+repository selects Node.js 26 in `.node-version`. To serve the production build
+locally, run `mise x -- npm run preview` from `react_app/` and open
+`http://127.0.0.1:8000`.
+
+## Deploying
+
+After installing dependencies as described above, run these commands from the
+repository root. Sign in with Wrangler once per machine; skip that command if
+already authenticated:
+
+```sh
+cd react_app
+mise x -- npx wrangler login
+mise x -- npm run build
+mise x -- npm run deploy
+```
+
+The build creates the deployment configuration used by Wrangler. This deploys
+the `greggdict` Worker configured in `react_app/wrangler.jsonc`. See Cloudflare's
+[Wrangler login](https://developers.cloudflare.com/workers/wrangler/commands/general/#login)
+and [deploy](https://developers.cloudflare.com/workers/wrangler/commands/workers/#deploy)
+documentation for account authentication and deployment details.
 
 Dictionary data and page scans are copied from the repository's `assets/`
 directory into the static build. The browser does not fetch them from a CDN.
